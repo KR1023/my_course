@@ -8,6 +8,11 @@ public class UserViewController {
 
 	@GetMapping("/login")
 	public String loginPage() {
-		return "loginForm";
+		return "auth/loginForm";
+	}
+	
+	@GetMapping("/register")
+	public String registerForm() {
+		return "auth/registerForm";
 	}
 }

@@ -8,6 +8,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -25,18 +26,28 @@ public class SecurityConfig {
 	private final UserDetailService userService;
 	
 	@Bean
+	public WebSecurityCustomizer configure() {
+		return web -> web.ignoring()
+				.requestMatchers(new AntPathRequestMatcher("/jquery/**"));
+	}
+	
+	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 		return http
 				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/").permitAll()
+						.requestMatchers("/", "/login", "/user", "/test", "/register").permitAll()
 						.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-						.dispatcherTypeMatchers(DispatcherType.INCLUDE).permitAll()
-						.requestMatchers("/", "/WEB-INF/views/**").permitAll()
 						.anyRequest().authenticated()
 				)
 				.formLogin(form -> form
-				.loginPage("/login")
-				.permitAll())
+						.loginPage("/login")
+						.defaultSuccessUrl("/test")
+						.permitAll())
+				.logout(logout -> logout
+						.logoutSuccessUrl("/")
+						.invalidateHttpSession(true)
+						)
+				.csrf(AbstractHttpConfigurer::disable)
 				.build();
 		
 	}
