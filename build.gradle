@@ -41,6 +41,8 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+ext['spring-security.version']='6.3.3'
+
 tasks.named('test') {
 	useJUnitPlatform()
 }

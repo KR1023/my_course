@@ -14,6 +14,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.ysh.my_course.service.UserDetailService;
 
+import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -24,30 +25,20 @@ public class SecurityConfig {
 	private final UserDetailService userService;
 	
 	@Bean
-	public WebSecurityCustomizer configure() {
-		return (web) -> web.ignoring()
-				.requestMatchers("**");
-	}
-	
-	@SuppressWarnings("deprecation")
-	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 		return http
-				.authorizeRequests(auth -> auth
-						.requestMatchers(
-								new AntPathRequestMatcher("/login"),
-								new AntPathRequestMatcher("/register"),
-								new AntPathRequestMatcher("/user")
-								).permitAll()
-								.anyRequest().authenticated())
-				.formLogin(formLogin -> formLogin
-						.loginPage("/login")
-						)
-				.logout(logout -> logout
-						.logoutSuccessUrl("/")
-						.invalidateHttpSession(true)
+				.authorizeHttpRequests(auth -> auth
+						.requestMatchers("/").permitAll()
+						.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+						.dispatcherTypeMatchers(DispatcherType.INCLUDE).permitAll()
+						.requestMatchers("/", "/WEB-INF/views/**").permitAll()
+						.anyRequest().authenticated()
 				)
+				.formLogin(form -> form
+				.loginPage("/login")
+				.permitAll())
 				.build();
+		
 	}
 	
 	@Bean
