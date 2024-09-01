@@ -2,6 +2,7 @@ package com.ysh.my_course.service;
 
 import java.util.List;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ysh.my_course.dto.AddUserDto;
@@ -17,9 +18,15 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
 	private final UserRepository userRepository;
+	private final BCryptPasswordEncoder pwdEncoder;
 	
 	public User addUser(AddUserDto dto) {
-		return userRepository.save(dto.toEntity());
+		return userRepository.save(User.builder()
+				.email(dto.getEmail())
+				.name(dto.getName())
+				.password(pwdEncoder.encode(dto.getPassword()))
+				.phone(dto.getPhone())
+				.build());
 	}
 	
 	public User getUserByEmail(String email) {
