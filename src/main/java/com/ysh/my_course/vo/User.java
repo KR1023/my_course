@@ -28,6 +28,9 @@ public class User{
 	private String password;
 	
 	@Column
+	private String salt;
+	
+	@Column
 	private String phone;
 	
 	@Column

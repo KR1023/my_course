@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ysh.my_course.dto.AddUserDto;
@@ -24,6 +25,11 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	private final UserService userService;
+	
+	@PostMapping("/login")
+	public void login(@RequestParam("email") String email, @RequestParam("password") String password) {
+		System.out.println(email + " / " + password);
+	}
 	
 	@PostMapping("/user")
 	public ResponseEntity<String> addUser(@RequestBody AddUserDto dto) {
