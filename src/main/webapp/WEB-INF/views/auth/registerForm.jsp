@@ -29,8 +29,25 @@
 		
 		let reqJson = JSON.stringify({"email":email, "name":name, "password":password, "phone":phone});
 		
+		if(email === '' || email.length === 0){
+			alert("이메일을 입력해 주세요.");
+			return;
+		}
+		
+		if(name === '' || name.length === 0){
+			alert("이름을 입력해 주세요.");
+			return;
+		}
+		
+		if(password === '' || password.length === 0){
+			alert("비밀번호를 입력해 주세요.");
+			return;
+		}
+			
+		
 		console.log(reqJson);
 		
+		/*
 		$.ajax({
 			url: "/user",
 			data: reqJson,
@@ -40,6 +57,7 @@
 				console.log(data);
 			}
 		});
+		*/
 	}
 	
 </script>
