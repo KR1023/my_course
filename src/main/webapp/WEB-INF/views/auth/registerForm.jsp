@@ -15,7 +15,6 @@
 	<input type="password" name="password" placeholder="password"/><br />
 	<input type="text" name="phone" placeholder="phone"/><br />
 	<button type="button" onclick="register()">signup</button>
-	
 	<a href="/login">login</a>
 </form>
 <script type="text/javascript">
@@ -43,21 +42,28 @@
 			alert("비밀번호를 입력해 주세요.");
 			return;
 		}
-			
 		
-		console.log(reqJson);
 		
-		/*
 		$.ajax({
 			url: "/user",
 			data: reqJson,
 			type: "post",
+			async: false,
 			contentType: "application/json",
-			success: data => {
+			success: (data,textStatus,jqXHR) => {
 				console.log(data);
+				console.log(textStatus);
+				console.log(jqXHR);
+				if(jqXHR.status === 201){
+					alert("회원가입이 완료되었습니다.");
+					location.replace("/login");
+				}
+			},
+			error: (data, error) => {
+				if(data.status === 409)
+					alert("이미 존재하는 이메일입니다.");
 			}
 		});
-		*/
 	}
 	
 </script>

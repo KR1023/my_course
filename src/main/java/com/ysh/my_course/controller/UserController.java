@@ -26,11 +26,17 @@ public class UserController {
 	private final UserService userService;
 	
 	@PostMapping("/user")
-	public ResponseEntity<User> addUser(@RequestBody AddUserDto dto) {
-		System.out.println(dto.getEmail() + " / " + dto.getPassword());
-		User user = userService.addUser(dto);
+	public ResponseEntity<String> addUser(@RequestBody AddUserDto dto) {
+		try {
+			User user = userService.addUser(dto);
+		}catch(Exception e) {
+			if(e.getMessage().equals("user already exists."))
+				return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+			else
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+		}
 		
-		return ResponseEntity.status(HttpStatus.CREATED).body(user);
+		return ResponseEntity.status(HttpStatus.CREATED).body("Created");
 	}
 	
 	@GetMapping("/user/{email}")

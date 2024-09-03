@@ -18,13 +18,18 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	
-	public User addUser(AddUserDto dto) {
-		return userRepository.save(User.builder()
-				.email(dto.getEmail())
-				.name(dto.getName())
-				.password(dto.getPassword())
-				.phone(dto.getPhone())
-				.build());
+	public User addUser(AddUserDto dto) throws Exception {
+		User user = userRepository.findByEmail(dto.getEmail());
+		if(user != null) {
+			throw new Exception("user already exists.");
+		}else {
+			return userRepository.save(User.builder()
+					.email(dto.getEmail())
+					.name(dto.getName())
+					.password(dto.getPassword())
+					.phone(dto.getPhone())
+					.build());
+		}
 	}
 	
 	public User getUserByEmail(String email) {
