@@ -45,10 +45,11 @@ public class User{
 	private LocalDateTime createdDt;
 	
 	@Builder
-	public User(String email, String name, String password, String phone) {
+	public User(String email, String name, String password, String salt, String phone) {
 		this.email = email;
 		this.name = name;
 		this.password = password;
+		this.salt = salt;
 		this.phone = phone;
 	}
 	

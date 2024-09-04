@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import com.ysh.my_course.dto.AddUserDto;
 import com.ysh.my_course.dto.UpdateUserDto;
 import com.ysh.my_course.repository.UserRepository;
+import com.ysh.my_course.utils.ConfigUtil;
+import com.ysh.my_course.utils.CryptoUtil;
 import com.ysh.my_course.vo.User;
 
 import jakarta.transaction.Transactional;
@@ -17,8 +19,42 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
 	private final UserRepository userRepository;
+	private final CryptoUtil cryptoUtil;
+	private final ConfigUtil configUtil;
+	
+	public boolean login(String email, String password) {
+		String secretKey = configUtil.getProperty("AES.KEY");
+		String iv = configUtil.getProperty("AES.IV");
+		
+		try {
+			String decrypted = cryptoUtil.decryptAES256(secretKey, iv, password);
+			
+			User user = userRepository.findByEmail(email);
+			String salt = user.getSalt();
+			String encPwd = user.getPassword();
+			
+			String toCheck = cryptoUtil.getEncrypt(decrypted, salt);
+			
+			if(toCheck.equals(encPwd))
+				return true;
+			else
+				return false;
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+			return false;	
+	}
 	
 	public User addUser(AddUserDto dto) throws Exception {
+		String secretKey = configUtil.getProperty("AES.KEY");
+		String iv = configUtil.getProperty("AES.IV");
+		
+		String decrypted = cryptoUtil.decryptAES256(secretKey, iv, dto.getPassword());
+		
+		String createdSalt = cryptoUtil.getSalt();
+		String encryptedPassword = cryptoUtil.getEncrypt(decrypted, createdSalt);
+		
 		User user = userRepository.findByEmail(dto.getEmail());
 		if(user != null) {
 			throw new Exception("user already exists.");
@@ -30,7 +66,8 @@ public class UserService {
 			return userRepository.save(User.builder()
 					.email(dto.getEmail())
 					.name(dto.getName())
-					.password(dto.getPassword())
+					.password(encryptedPassword)
+					.salt(createdSalt)
 					.phone(dto.getPhone())
 					.build());
 		}

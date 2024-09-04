@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ysh.my_course.dto.AddUserDto;
+import com.ysh.my_course.dto.RequestLoginDto;
 import com.ysh.my_course.dto.UpdateUserDto;
 import com.ysh.my_course.service.UserService;
-import com.ysh.my_course.utils.ConfigUtil;
-import com.ysh.my_course.utils.CryptoUtil;
 import com.ysh.my_course.vo.User;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -27,24 +27,31 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	private final UserService userService;
-	private final CryptoUtil cryptoUtil;
-	private final ConfigUtil configUtil;
 	
 	@PostMapping("/login")
-	public void login(@RequestParam("email") String email, @RequestParam("password") String password) {
-		System.out.println(email + " / " + password);
+	public ResponseEntity<String> login(HttpServletRequest request, @RequestBody RequestLoginDto dto) {
+		System.out.println(dto.getEmail() + " / " + dto.getPassword());
+		
+		boolean result = userService.login(dto.getEmail(), dto.getPassword());
+		
+		System.out.println("result = " + result);
+		
+		if(result) {
+			HttpSession session = request.getSession();
+			session.setAttribute("session", session.getId());
+			session.setAttribute("loginEmail", dto.getEmail());
+			
+			return ResponseEntity.status(HttpStatus.OK).body("login success");
+		}else {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("email or password is not correct");
+		}
 	}
 	
 	@PostMapping("/user")
 	public ResponseEntity<String> addUser(@RequestBody AddUserDto dto) {
 		System.out.println("encrypted_pwd : " + dto.getPassword());
-		String secretKey = configUtil.getProperty("AES.KEY");
-		String iv = configUtil.getProperty("AES.IV");
-		
 		try {
-			String decrypted = cryptoUtil.decryptAES256(secretKey, iv, dto.getPassword());
-			System.out.println("decrypted = " + decrypted);
-			User user = userService.addUser(dto);
+			userService.addUser(dto);
 		}catch(Exception e) {
 			if(e.getMessage().equals("user already exists."))
 				return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());

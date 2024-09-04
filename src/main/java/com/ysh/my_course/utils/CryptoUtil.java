@@ -11,8 +11,6 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.stereotype.Component;
 
-import jakarta.xml.bind.DatatypeConverter;
-
 @Component
 public class CryptoUtil {
 
