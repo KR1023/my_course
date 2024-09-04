@@ -23,6 +23,10 @@ public class UserService {
 		if(user != null) {
 			throw new Exception("user already exists.");
 		}else {
+//			return User.builder()
+//					.email(dto.getEmail())
+//					.password(dto.getPassword())
+//					.build();
 			return userRepository.save(User.builder()
 					.email(dto.getEmail())
 					.name(dto.getName())

@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ysh.my_course.dto.AddUserDto;
 import com.ysh.my_course.dto.UpdateUserDto;
 import com.ysh.my_course.service.UserService;
+import com.ysh.my_course.utils.ConfigUtil;
+import com.ysh.my_course.utils.CryptoUtil;
 import com.ysh.my_course.vo.User;
 
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,8 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	private final UserService userService;
+	private final CryptoUtil cryptoUtil;
+	private final ConfigUtil configUtil;
 	
 	@PostMapping("/login")
 	public void login(@RequestParam("email") String email, @RequestParam("password") String password) {
@@ -33,13 +37,21 @@ public class UserController {
 	
 	@PostMapping("/user")
 	public ResponseEntity<String> addUser(@RequestBody AddUserDto dto) {
+		System.out.println("encrypted_pwd : " + dto.getPassword());
+		String secretKey = configUtil.getProperty("AES.KEY");
+		String iv = configUtil.getProperty("AES.IV");
+		
 		try {
+			String decrypted = cryptoUtil.decryptAES256(secretKey, iv, dto.getPassword());
+			System.out.println("decrypted = " + decrypted);
 			User user = userService.addUser(dto);
 		}catch(Exception e) {
 			if(e.getMessage().equals("user already exists."))
 				return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-			else
+			else {
+				e.printStackTrace();
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+			}
 		}
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body("Created");

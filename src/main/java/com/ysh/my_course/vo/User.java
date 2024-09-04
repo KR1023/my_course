@@ -8,6 +8,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,11 +36,12 @@ public class User{
 	private String phone;
 	
 	@Column
-	@ColumnDefault("normal")
+	@ColumnDefault("'normal'")
 	private String auth;
 	
 	@Column
 	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime createdDt;
 	
 	@Builder

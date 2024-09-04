@@ -1,11 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="java.io.InputStream, java.util.Properties"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%
+	InputStream input = application.getClassLoader().getResourceAsStream("config.properties");
+
+	Properties properties = new Properties();
+	
+	if(input != null){
+		properties.load(input);		
+	}else{
+		throw new RuntimeException("config.properties is not found");
+	}
+	
+	String aesKey = properties.getProperty("AES.KEY");
+	String iv = properties.getProperty("AES.IV");
+	
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>register</title>
-<script type="text/javascript" src="/jquery/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" src="/javascript/jquery/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" src="/javascript/crypto/crypto-js.min.js"></script>
+
 </head>
 <body>
 <h1>register</h1>
@@ -21,9 +41,16 @@
 	let form = document.getElementById("reg_form");
 	
 	let register = () => {
+		const key = "<%=aesKey%>";
+		const iv =  "<%=iv%>";
+		
 		let email = form.email.value;
 		let name = form.name.value;
-		let password = form.password.value;
+		let password = CryptoJS.AES.encrypt(form.password.value, CryptoJS.enc.Utf8.parse(key), {
+			iv: CryptoJS.enc.Utf8.parse(iv),
+			padding: CryptoJS.pad.Pkcs7,
+			mode: CryptoJS.mode.CBC
+		}).toString();
 		let phone = form.phone.value;
 		
 		let reqJson = JSON.stringify({"email":email, "name":name, "password":password, "phone":phone});
@@ -42,7 +69,6 @@
 			alert("비밀번호를 입력해 주세요.");
 			return;
 		}
-		
 		
 		$.ajax({
 			url: "/user",
