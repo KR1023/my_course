@@ -44,10 +44,17 @@ public class UserController {
 			session.setAttribute("session", session.getId());
 			session.setAttribute("loginEmail", dto.getEmail());
 			
-			return ResponseEntity.status(HttpStatus.OK).body("login success");
+			return ResponseEntity.status(HttpStatus.OK).body("loginSuccess");
 		}else {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("email or password is not correct");
+			return ResponseEntity.status(HttpStatus.OK).body("failed");
 		}
+	}
+	
+	@GetMapping("/logout")
+	public ResponseEntity<String> login(HttpServletRequest request){
+		HttpSession session = request.getSession();
+		session.invalidate();
+		return ResponseEntity.status(HttpStatus.OK).body("logoutSuccess");
 	}
 	
 	@PostMapping("/user")

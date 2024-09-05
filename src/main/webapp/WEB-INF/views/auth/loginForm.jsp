@@ -71,6 +71,12 @@
 				console.log(data);
 				console.log(textStatus);
 				console.log(jqXHR);
+				if(jqXHR.status === 200){
+					if(data === "loginSuccess")
+						location.replace("/test");
+					else if(data === "failed")
+						alert("이메일 혹은 비밀번호를 확인해 주세요.");
+				}
 			},
 			error: (data, error) => {
 				console.error(data);

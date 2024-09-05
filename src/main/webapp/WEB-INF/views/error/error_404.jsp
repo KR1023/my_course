@@ -26,15 +26,20 @@ body{
 	}
 	
 </style>
+<script type="text/javascript" src="/javascript/jquery/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 <div class="container">
 	<div class="message">
 		<span>요청하신 페이지를 찾을 수 없습니다.</span><br />
-		<a href="/test">돌아 가기</a>
+		<a href="/test" id="history_back">돌아 가기</a>
 	</div>
-	
-	
 </div>
 </body>
+<script type="text/javascript">
+	$("#history_back").click((e) => {
+		e.preventDefault();
+		history.back();	
+	});
+</script>
 </html>

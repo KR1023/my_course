@@ -13,7 +13,9 @@ import com.ysh.my_course.vo.User;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class UserService {
@@ -30,6 +32,10 @@ public class UserService {
 			String decrypted = cryptoUtil.decryptAES256(secretKey, iv, password);
 			
 			User user = userRepository.findByEmail(email);
+			
+			if(user == null) 
+				return false;
+			
 			String salt = user.getSalt();
 			String encPwd = user.getPassword();
 			
@@ -41,9 +47,9 @@ public class UserService {
 				return false;
 			
 		}catch(Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
-			return false;	
+			return false;
 	}
 	
 	public User addUser(AddUserDto dto) throws Exception {
