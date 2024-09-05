@@ -1,6 +1,6 @@
-package com.ysh.my_course.dto;
+package com.ysh.my_course.dto.user;
 
-import com.ysh.my_course.vo.User;
+import com.ysh.my_course.domain.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

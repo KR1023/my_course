@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ysh.my_course.dto.AddUserDto;
-import com.ysh.my_course.dto.RequestLoginDto;
-import com.ysh.my_course.dto.UpdateUserDto;
+import com.ysh.my_course.domain.User;
+import com.ysh.my_course.dto.user.AddUserDto;
+import com.ysh.my_course.dto.user.RequestLoginDto;
+import com.ysh.my_course.dto.user.UpdateUserDto;
 import com.ysh.my_course.service.UserService;
-import com.ysh.my_course.vo.User;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -32,12 +32,9 @@ public class UserController {
 	
 	@PostMapping("/login")
 	public ResponseEntity<String> login(HttpServletRequest request, @RequestBody RequestLoginDto dto) {
-		System.out.println(dto.getEmail() + " / " + dto.getPassword());
 		log.info(dto.getEmail() + " / " + dto.getPassword());
 		
 		boolean result = userService.login(dto.getEmail(), dto.getPassword());
-		
-		System.out.println("result = " + result);
 		
 		if(result) {
 			HttpSession session = request.getSession();

@@ -1,4 +1,4 @@
-package com.ysh.my_course.dto;
+package com.ysh.my_course.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +7,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RequestLoginDto {
-	private String email;
+public class UpdateUserDto {
+
+	private String name;
 	private String password;
+	private String phone;
+	
 }

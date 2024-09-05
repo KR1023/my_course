@@ -1,4 +1,8 @@
-package com.ysh.my_course.vo;
+package com.ysh.my_course.domain;
+
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,13 +15,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @Entity
-public class Course {
+public class Image {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	public Long id;
 	
 	@Column
-	private String courseName;
+	public String name;
 	
+	@Column
+	public String path;
+	
+	@Column
+	@CreationTimestamp
+	private LocalDateTime uploaded_dt;
 }

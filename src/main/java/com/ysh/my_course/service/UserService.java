@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.ysh.my_course.dto.AddUserDto;
-import com.ysh.my_course.dto.UpdateUserDto;
+import com.ysh.my_course.domain.User;
+import com.ysh.my_course.dto.user.AddUserDto;
+import com.ysh.my_course.dto.user.UpdateUserDto;
 import com.ysh.my_course.repository.UserRepository;
 import com.ysh.my_course.utils.ConfigUtil;
 import com.ysh.my_course.utils.CryptoUtil;
-import com.ysh.my_course.vo.User;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
