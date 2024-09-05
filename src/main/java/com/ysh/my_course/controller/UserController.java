@@ -21,7 +21,9 @@ import com.ysh.my_course.vo.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 public class UserController {
@@ -31,6 +33,7 @@ public class UserController {
 	@PostMapping("/login")
 	public ResponseEntity<String> login(HttpServletRequest request, @RequestBody RequestLoginDto dto) {
 		System.out.println(dto.getEmail() + " / " + dto.getPassword());
+		log.info(dto.getEmail() + " / " + dto.getPassword());
 		
 		boolean result = userService.login(dto.getEmail(), dto.getPassword());
 		
