@@ -38,7 +38,7 @@
 	            	</c:when>
 	            	<c:otherwise>
 	            		<c:forEach var="course" items="${list.content }">
-	            			<div class="course">
+	            			<div class="course" onClick="getCourse(${course.id })">
 			                    <img src="./images/dashboard.svg" alt="course_img" />
 			                    <div class="desc">
 			                        <p>${course.courseName }</p>
@@ -129,7 +129,22 @@
         }
     });
     
-    
-
+    let getCourse = (courseId) => {
+    	console.log(courseId);
+    	$.ajax({
+    		url: '/api/course/' + courseId,
+    		type: "GET",
+    		async: false,
+    		success: (data, textStatus, jqXHR) => {
+    			if(jqXHR.status === 200){
+    				console.log(data);
+    			}
+    		},
+    		error: (data, error) => {
+    			console.error(data);
+    			console.error(error);
+    		}
+    	});
+    }
 </script>
 </html>
