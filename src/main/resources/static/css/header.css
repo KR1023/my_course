@@ -27,3 +27,11 @@
     font-size: 1.5rem;
     margin-left: 10px;
 }
+
+.header header .account span:hover{
+	cursor: pointer;
+}
+
+.header header .account a:hover{
+	cursor: pointer;
+}

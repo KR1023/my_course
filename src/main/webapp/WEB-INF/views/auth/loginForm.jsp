@@ -23,16 +23,24 @@
 <title>login</title>
 <script type="text/javascript" src="/javascript/jquery/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="/javascript/crypto/crypto-js.min.js"></script>
+<link rel="stylesheet" href="/css/login.css" />
 
 </head>
 <body>
-<h1>login</h1>
-<form action="/login" method="POST" id="login_form">
-	<input type="email" name="email" placeholder="email" onkeydown="keyDown(this)"/><br />
-	<input type="password" name="password" placeholder="password" onkeydown="keyDown(this)"/><br />
-	<button type="button" onClick="login()" >로그인</button>
-</form>
-<a href="/register">signup</a>
+<div class="login">
+        <div class="container">
+            <div class="logo">
+                <img src="images/event_note.svg" alt="logo" />
+                <span>MyCourse</span>
+            </div>
+            <form action="/login" method="POST" id="login_form">
+                <input type="email" name="email" placeholder="Email" onkeydown="keyDown(this)"/><br />
+                <input type="password" name="password" placeholder="Password" onkeydown="keyDown(this)"/><br />
+                <button type="button" onClick="login()" >로그인</button>
+            </form>
+            <a href="/register">signup</a>
+        </div>
+    </div>
 </body>
 <script type="text/javascript">
 	let form = $("#login_form")[0];

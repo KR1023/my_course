@@ -51,12 +51,12 @@ public class UserController {
 	}
 	
 	@GetMapping("/logout")
-	public ResponseEntity<?> login(HttpServletRequest request){
+	public ResponseEntity<String> logout(HttpServletRequest request){
 		HttpSession session = request.getSession();
+		log.info(String.format("Called Logout [logout email : %s ]", session.getAttribute("loginEmail")));
 		session.invalidate();
-		HttpHeaders headers = new HttpHeaders();
-		headers.setLocation(URI.create("/course"));
-		return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+		
+		return ResponseEntity.status(HttpStatus.OK).body("logoutSuccess");
 	}
 	
 	@PostMapping("/user")

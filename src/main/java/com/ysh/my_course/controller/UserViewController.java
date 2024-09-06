@@ -13,7 +13,7 @@ public class UserViewController {
 	public String loginPage(HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("loginEmail") != null)
-			return "redirect:/test";
+			return "redirect:/course";
 		
 		return "auth/loginForm";
 	}
