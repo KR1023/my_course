@@ -3,6 +3,10 @@ package com.ysh.my_course.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.ysh.my_course.domain.Course;
@@ -51,8 +55,8 @@ public class CourseService {
 		return responseDto;
 	}
 	
-	public List<ResponseCourseDto> getCourses(){
-		List<Course> courseList = courseRepository.findAll();
+	public Page<ResponseCourseDto> getCourses(int pageNo){
+	 	List<Course> courseList = courseRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
 		
 		List<ResponseCourseDto> dtoList = courseList.stream()
 				.map(e -> ResponseCourseDto
@@ -66,7 +70,16 @@ public class CourseService {
 						.build())
 				.collect(Collectors.toList());
 		
-		return dtoList;
+		PageRequest pageRequest= PageRequest.of(pageNo, 15);
+		
+		int start = (int) pageRequest.getOffset();
+		int end = Math.min((start + pageRequest.getPageSize()), dtoList.size());
+		
+		System.out.println("start : " + start + " / end : " + end);
+			
+		Page<ResponseCourseDto> responseList = new PageImpl<ResponseCourseDto>(dtoList.subList(start, end), pageRequest, dtoList.size());
+		
+		return responseList;
 	}
 	
 	@Transactional

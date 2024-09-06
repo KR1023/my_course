@@ -1,7 +1,6 @@
 package com.ysh.my_course.controller;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ysh.my_course.dto.course.AddCourseDto;
@@ -44,18 +44,17 @@ public class CourseController {
 		log.info("[courseId = " + courseId + "]");
 		ResponseCourseDto course = courseService.getCourse(courseId);
 		
-		
-		
 		return ResponseEntity.status(HttpStatus.OK).body(course); 
 	}
 	
 	@GetMapping("/course")
-	public ResponseEntity<List<ResponseCourseDto>> getCourses(HttpServletRequest request){
+	public ResponseEntity<Page<ResponseCourseDto>> getCourses(@RequestParam(required= false, defaultValue="0", value="page") int pageNo, HttpServletRequest request){
 		HttpSession session = request.getSession();
 		
 		log.info("getCourses");
 		
-		List<ResponseCourseDto> list = courseService.getCourses();
+//		List<ResponseCourseDto> list = courseService.getCourses();
+		Page<ResponseCourseDto> list = courseService.getCourses(pageNo);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(list);
 	}
