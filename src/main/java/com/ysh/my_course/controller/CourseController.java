@@ -50,12 +50,11 @@ public class CourseController {
 	}
 	
 	@GetMapping("/course")
-	public ResponseEntity<Page<ResponseCourseDto>> getCourses(@RequestParam(required= false, defaultValue="0", value="page") int pageNo, HttpServletRequest request){
+	public ResponseEntity<Page<ResponseCourseDto>> getCourses(@RequestParam(required= false, defaultValue="0", value="page") int pageNo, HttpServletRequest request) throws IllegalArgumentException{
 		HttpSession session = request.getSession();
 		
 		log.info("getCourses");
 		
-//		List<ResponseCourseDto> list = courseService.getCourses();
 		Page<ResponseCourseDto> list = courseService.getCourses(pageNo);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(list);

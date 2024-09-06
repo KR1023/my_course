@@ -55,7 +55,7 @@ public class CourseService {
 		return responseDto;
 	}
 	
-	public Page<ResponseCourseDto> getCourses(int pageNo){
+	public Page<ResponseCourseDto> getCourses(int pageNo) throws IllegalArgumentException{
 	 	List<Course> courseList = courseRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
 		
 		List<ResponseCourseDto> dtoList = courseList.stream()
@@ -75,8 +75,6 @@ public class CourseService {
 		int start = (int) pageRequest.getOffset();
 		int end = Math.min((start + pageRequest.getPageSize()), dtoList.size());
 		
-		System.out.println("start : " + start + " / end : " + end);
-			
 		Page<ResponseCourseDto> responseList = new PageImpl<ResponseCourseDto>(dtoList.subList(start, end), pageRequest, dtoList.size());
 		
 		return responseList;

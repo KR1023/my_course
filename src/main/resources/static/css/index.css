@@ -1,0 +1,28 @@
+@font-face{
+    font-family: "NanumSquareNeo";
+    src: url("../fonts/NanumSquareNeo-Variable.ttf") format("truetype");
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    font-family: "NanumSquareNeo";
+}
+
+a{
+    text-decoration: none;
+}
+
+a:visited{
+    text-decoration: none;
+    color: #000;
+}
+
+hr{
+    border: 1px solid #949494;
+}
+
+p{
+    margin: 0;
+    padding: 0;
+}
