@@ -28,9 +28,9 @@
 <body>
 <h1>login</h1>
 <form action="/login" method="POST" id="login_form">
-	<input type="email" name="email" placeholder="email"/><br />
-	<input type="password" name="password" placeholder="password"/><br />
-	<button type="button" onClick="login()">로그인</button>
+	<input type="email" name="email" placeholder="email" onkeydown="keyDown(this)"/><br />
+	<input type="password" name="password" placeholder="password" onkeydown="keyDown(this)"/><br />
+	<button type="button" onClick="login()" >로그인</button>
 </form>
 <a href="/register">signup</a>
 </body>
@@ -68,12 +68,11 @@
 			contentType: "application/json",
 			data: reqJson,
 			success: (data, textStatus, jqXHR) => {
-				console.log(data);
-				console.log(textStatus);
-				console.log(jqXHR);
+				let referrer = document.referrer;
 				if(jqXHR.status === 200){
 					if(data === "loginSuccess")
-						location.replace("/test");
+						// location.replace("/test");
+						location.replace(referrer);
 					else if(data === "failed")
 						alert("이메일 혹은 비밀번호를 확인해 주세요.");
 				}
@@ -83,6 +82,12 @@
 				console.error(error);
 			}
 		});
+	}
+	
+	let keyDown = () => {
+		let keyCode = event.keyCode;
+		if(keyCode === 13)
+			login();
 	}
 </script>
 </html>

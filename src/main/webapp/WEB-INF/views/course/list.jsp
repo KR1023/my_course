@@ -16,15 +16,7 @@
 <body>
     <div class="main">
         <div class="wrapper">
-            <header>
-                <div class="logo">
-                    <img src="images/event_note.svg" />
-                    <span>MyCourse</span>
-                </div>
-                <div class="account">
-                    <a class="login" href="/login">로그인</a>
-                </div>
-            </header>
+            <jsp:include page="../common/header.jsp" />
             <hr />
             <nav>
                 <div class="category" id="category_btn">

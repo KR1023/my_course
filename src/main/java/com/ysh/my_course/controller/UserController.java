@@ -1,7 +1,10 @@
 package com.ysh.my_course.controller;
 
+import java.net.URI;
 import java.util.List;
 
+import org.apache.catalina.connector.Response;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -48,10 +51,12 @@ public class UserController {
 	}
 	
 	@GetMapping("/logout")
-	public ResponseEntity<String> login(HttpServletRequest request){
+	public ResponseEntity<?> login(HttpServletRequest request){
 		HttpSession session = request.getSession();
 		session.invalidate();
-		return ResponseEntity.status(HttpStatus.OK).body("logoutSuccess");
+		HttpHeaders headers = new HttpHeaders();
+		headers.setLocation(URI.create("/course"));
+		return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
 	}
 	
 	@PostMapping("/user")
