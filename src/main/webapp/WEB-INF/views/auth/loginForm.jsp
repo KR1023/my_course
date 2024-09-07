@@ -78,9 +78,13 @@
 			success: (data, textStatus, jqXHR) => {
 				let referrer = document.referrer;
 				if(jqXHR.status === 200){
-					if(data === "loginSuccess")
+					if(data === "loginSuccess"){
+						if(referrer.includes("/register"))
+							location.replace("/course");
+						else
+							location.replace(referrer);
+					}
 						// location.replace("/test");
-						location.replace(referrer);
 					else if(data === "failed")
 						alert("이메일 혹은 비밀번호를 확인해 주세요.");
 				}

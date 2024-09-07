@@ -23,22 +23,41 @@
 <head>
 <meta charset="UTF-8">
 <title>register</title>
+<link rel="stylesheet" href="/css/register.css" />
 <script type="text/javascript" src="/javascript/jquery/jquery-3.7.1.min.js"></script>
 <script type="text/javascript" src="/javascript/crypto/crypto-js.min.js"></script>
 
 </head>
 <body>
-<h1>register</h1>
-<form id="reg_form" action="/user" method="POST">
-	<input type="email" name=email placeholder="email"/><br />
-	<input type="text" name="name" placeholder="name" maxLength="10" /><br />
-	<input type="password" name="password" placeholder="password"/><br />
-	<input type="text" name="phone" placeholder="phone"/><br />
-	<button type="button" onclick="register()">signup</button>
-	<a href="/login">login</a>
-</form>
+<div class="register">
+    <div class="container">
+        <div class="nav">
+            <img src="images/arrow/arrow_back.svg" alt="arrow_back" onClick="backToLogin()"/>
+        </div>
+        <div class="header">
+            <img src="images/event_note.svg" alt="logo" />
+            <span>MyCourse 사용자 등록</span>
+        </div>
+        <form id="reg_form" action="/user" method="POST">
+            <input type="email" name=email placeholder="email"/>
+            <p class="err_msg">이메일 올바르지 않습니다.</p>
+            <input type="text" name="name" placeholder="name" maxLength="10" />
+            <p class="err_msg">이름은 2 ~ 16자로 입력해 주세요.</p>
+            <input type="password" name="password" placeholder="password"/>
+            <p class="err_msg">비밀번호는 8 ~ 16자로 입력해 주세요.</p>
+            <input type="text" name="phone" placeholder="phone"/>
+            <p class="err_msg">전화번호 형식으로 입력해 주세요.</p>
+            <button type="button" onclick="register()">signup</button>
+        </form>
+    </div>
+</div>
 <script type="text/javascript">
 	let form = document.getElementById("reg_form");
+	
+	let backToLogin = () => {
+		// console.log(window.location);
+		location.href = "/login";
+	};
 	
 	let register = () => {
 		const key = "<%=aesKey%>";
