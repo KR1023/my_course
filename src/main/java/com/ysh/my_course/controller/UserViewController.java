@@ -19,7 +19,11 @@ public class UserViewController {
 	}
 	
 	@GetMapping("/register")
-	public String registerForm() {
+	public String registerForm(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		if(session.getAttribute("loginEmail") != null)
+			return "redirect:/course";
+		
 		return "auth/registerForm";
 	}
 }

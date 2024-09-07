@@ -75,6 +75,36 @@
 .main .wrapper nav .category img{
     width: 35px;
     height: 35px;
+    transition: .3s;
+}
+
+.main .wrapper nav .category .category_container{
+	font-family: 'NanumSquareNeo';
+	font-size: 18px;
+    width: 200px;
+    background: #FBFBFB;
+    border: .5px solid #C7C7C7;
+    border-radius: 3px;
+    visibility: hidden;
+    position: absolute;
+    opacity: 0;
+    transition: .3s;
+}
+
+.main .wrapper nav .category .category_container p{
+	border-bottom: 1px solid #C7C7C7;
+	height: 35px;
+	line-height: 35px;
+	padding-left: 5px;
+}
+
+.main .wrapper nav .category .category_container p:last-child{
+	border: 0;
+}
+
+.main .wrapper nav .category .category_container hr{
+	border: 0;
+	border-bottom: 1px solid #C7C7C7;
 }
 
 .main .wrapper nav .search{
@@ -219,10 +249,3 @@ footer{
     background: #e7e7e7;
 }
 
-.main .category_container{
-    width: 200px;
-    height: 200px;
-    background: #C8C8C8;
-    visibility: hidden;
-    position: fixed;
-}

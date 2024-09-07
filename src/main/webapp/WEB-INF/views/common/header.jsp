@@ -16,7 +16,7 @@
 <body>
 <div class="header">
 <header>
-    <div class="logo">
+    <div class="logo" onClick="goToMain()">
         <img src="images/event_note.svg" />
         <span>MyCourse</span>
     </div>
@@ -36,6 +36,10 @@
 </div>
 </body>
 <script type="text/javascript">
+	let goToMain = () => {
+		location.href = "/course";
+	};
+	
 	let logout = () => {
 		$.ajax({
 			url: "/logout",

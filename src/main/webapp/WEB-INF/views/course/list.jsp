@@ -21,6 +21,10 @@
             <nav>
                 <div class="category" id="category_btn">
                     <img src="./images/menu.svg" alt="category" />
+                    <div class="category_container" id="cat_container">
+			            <p>강의</p>
+			            <p>공지사항</p>
+			        </div>
                 </div>
                 <div class="search">
                     <input type="text" name="course_name" placeholder="찾으시는 강의를 입력해 주세요."/>
@@ -91,18 +95,7 @@
         	</footer> -->
         </div>
        
-        <div class="category_container" id="cat_container">
-            강의<br />
-            <hr />
-            IT/컴퓨터<br />
-            운동<br />
-            경제<br />
-            <hr />
-            질문 게시판<br />
-            <hr />
-            공지사항
-            <br />
-        </div>
+        
     </div>
 </body>
 <script type="text/javascript">
@@ -110,21 +103,36 @@
 
     var target = document.getElementById("category_btn");
     
-	
+	window.addEventListener("click", (e) => {
+		showCategory = false;
+		target.children[0].src = "images/menu.svg";
+		$("#cat_container")
+			.css("opacity", "0")
+			.css("visibility", "hidden");
+	})
     
-    $("#category_btn").click(() => {
-    	var categoryTop = window.pageYOffset + target.getBoundingClientRect().top;
-        var categoryLeft = window.pageXOffset + target.getBoundingClientRect().left;
-        console.log(categoryTop, categoryLeft);    
+	
+    $("#category_btn").click((e) => {
+    	e.stopPropagation();
+    	// var categoryTop = window.pageYOffset + target.getBoundingClientRect().top;
+        // var categoryLeft = window.pageXOffset + target.getBoundingClientRect().left;
+        
+        var categoryTop = target.getBoundingClientRect().x;
+        var categoryLeft = target.getBoundingClientRect().y;
+        
         if(!showCategory){
+        	target.children[0].src = "images/close.svg";
             $("#cat_container")
-            .css("top", `${categoryTop + 40}px`)
-            .css("left", `${categoryLeft}px`)
-            .css("visibility", "visible");
+	            .css("top", `${categoryTop}px`)
+	            .css("left", `${categoryLeft}px`)
+	            .css("opacity", "1")
+	            .css("visibility", "visible");
             showCategory = true;
         }else if(showCategory){
+        	target.children[0].src = "images/menu.svg";
             $("#cat_container")
-            .css("visibility", "hidden");
+	            .css("opacity", "0")
+	            .css("visibility", "hidden");
             showCategory = false;
         }
     });
