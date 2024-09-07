@@ -11,13 +11,14 @@
 <meta charset="UTF-8">
 <title>Header</title>
 <link rel="stylesheet" href="/css/header.css" />
+<link rel="stylesheet" href="/css/index.css" />
 <script type="text/javascript" src="/javascript/jquery/jquery-3.7.1.min.js"></script>
 </head>
 <body>
 <div class="header">
 <header>
     <div class="logo" onClick="goToMain()">
-        <img src="images/event_note.svg" />
+        <img src="/images/event_note.svg" />
         <span>MyCourse</span>
     </div>
     <div class="account">

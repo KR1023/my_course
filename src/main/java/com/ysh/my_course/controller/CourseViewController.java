@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ysh.my_course.dto.course.ResponseCourseDto;
@@ -33,5 +34,14 @@ public class CourseViewController {
 		}
 		
 		return "course/list";
+	}
+	
+	@GetMapping("/course/{courseId}")
+	public String courseDetail(@PathVariable(value = "courseId") Long courseId, Model model) {
+		ResponseCourseDto course = courseService.getCourse(courseId);
+		
+		model.addAttribute("course", course);
+		return "course/detail";
+		
 	}
 }

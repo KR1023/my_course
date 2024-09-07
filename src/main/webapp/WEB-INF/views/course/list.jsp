@@ -137,6 +137,7 @@
         }
     });
     
+	/*
     let getCourse = (courseId) => {
     	console.log(courseId);
     	$.ajax({
@@ -153,6 +154,11 @@
     			console.error(error);
     		}
     	});
+    }*/
+    
+    let getCourse = (courseId) => {
+    	location.replace("/course/"+courseId);
     }
+    
 </script>
 </html>

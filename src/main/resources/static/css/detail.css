@@ -1,0 +1,59 @@
+@font-face{
+    font-family: 'NanumSquareNeo';
+    src: url("../fonts/NanumSquareNeo-Variable.ttf") format("truetype");
+}
+
+@font-face{
+    font-family: 'NanumPen';
+    src: url("../fonts/NanumPen.ttf") format("truetype");
+}
+
+.detail{
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.detail .wrapper{
+    width: 1280px;
+    height: 100%;
+    padding: 20px;
+    /* background: #ff0; */
+    box-sizing: border-box;
+}
+
+.detail .wrapper header{
+    width: 100%;
+    height: 50px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.detail .wrapper header .logo{
+    display: flex;
+    align-items: center;
+}
+
+.detail .wrapper header .logo:hover{
+    cursor: pointer;
+}
+
+.detail .wrapper header .logo img{
+    width: 45px;
+    height: 45px;
+}
+
+.detail .wrapper header .logo span{
+    font-family: 'NanumSquareNeo';
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin-left: 10px;
+}
