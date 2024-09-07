@@ -1,10 +1,7 @@
 package com.ysh.my_course.controller;
 
-import java.net.URI;
 import java.util.List;
 
-import org.apache.catalina.connector.Response;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -57,6 +54,17 @@ public class UserController {
 		session.invalidate();
 		
 		return ResponseEntity.status(HttpStatus.OK).body("logoutSuccess");
+	}
+	
+	@PostMapping("/check")
+	public ResponseEntity<String> checkUserEmail(@RequestBody String toCheck){
+		User user = userService.getUserByEmail(toCheck);
+		log.info(String.format("Called checkUserEmail : [toCheck : %s]", toCheck));
+		
+		if(user == null)
+			return ResponseEntity.status(HttpStatus.OK).body("empty");
+		else 
+			return ResponseEntity.status(HttpStatus.OK).body("exists");
 	}
 	
 	@PostMapping("/user")
