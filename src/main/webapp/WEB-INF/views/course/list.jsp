@@ -31,10 +31,10 @@
                     <img src="./images/search.svg" alt="search" />
                 </div>
             </nav>
-            <div class="option">
+<!--             <div class="option">
                 <span>인기순</span>
                 <span>최신순</span>
-            </div>
+            </div> -->
             <div class="courseList">
 	            <c:choose>
 	            	<c:when test="${list.totalElements == 0}">
@@ -58,7 +58,6 @@
 	            </c:choose>
 	            
                 <div class="paging">
-                	
                     <a href="/course?page=0" id="first_page"><img src="./images/arrow/double_arrow_left.svg"></a>
                     <c:if test="${list.first == false }">
                     	<a href="/course?page=${list.number - 1}" id="prev_page"><img src="./images/arrow/arrow_back.svg"></a>

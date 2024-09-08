@@ -52,12 +52,14 @@ public class CourseService {
 	public ResponseCourseDto getCourse(Long courseId) {
 		Course course = courseRepository.findById(courseId)
 				.orElseThrow(() -> new IllegalArgumentException(String.format("Course is not found.[courseId : %s]", courseId)));
+		
 		ResponseCourseDto responseDto = ResponseCourseDto.builder()
 											.id(course.getId())
 											.courseName(course.getCourseName())
 											.maxAttendee(course.getMaxAttendee())
 											.content(course.getContent())
 											.createdDt(course.getCreatedDt())
+											.closeDt(course.getClosingDt())
 											.userEmail(course.getUser().getEmail())
 											.build();
 		return responseDto;
@@ -74,6 +76,7 @@ public class CourseService {
 						.maxAttendee(e.getMaxAttendee())
 						.content(e.getContent())
 						.createdDt(e.getCreatedDt())
+						.closeDt(e.getClosingDt())
 						.userEmail(e.getUser().getEmail())
 						.build())
 				.collect(Collectors.toList());

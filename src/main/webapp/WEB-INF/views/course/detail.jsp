@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:parseDate value="${course.createdDt }" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedDatetime" type="both" />
+<fmt:parseDate value="${course.closeDt }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedCloseDatetime" type="both" />
 
 <%
 	String loginEmail = (String)session.getAttribute("loginEmail");
@@ -41,6 +42,10 @@
 						<tr>
 							<td class="col_1">등록일</td>
 							<td class="col_2"><fmt:formatDate pattern="yyyy년 MM월 dd일" value="${parsedDatetime }" /></td>
+						</tr>
+						<tr>
+							<td class="col_1">마감일</td>
+							<td class="col_2"><fmt:formatDate pattern="yyyy년 MM월 dd일" value="${parsedCloseDatetime }" /></td>
 						</tr>
 					</table>
 					<div class="apply">
@@ -105,7 +110,7 @@
 					}
 				},
 				error: (data, error) => {
-					alert("오류가 발생했습니다. 잠시 후에 다시 시도해 주세요.");
+					alert("오류가 발생했습니다. 잠시 후에 다시 시도해 주세요.");	
 					console.error(data);
 					console.error(error);
 				}

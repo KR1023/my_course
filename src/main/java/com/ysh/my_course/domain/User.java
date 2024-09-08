@@ -54,6 +54,7 @@ public class User{
 		this.password = password;
 		this.salt = salt;
 		this.phone = phone;
+		this.auth = "normal";
 	}
 	
 	public void update(String name, String password, String phone) {
