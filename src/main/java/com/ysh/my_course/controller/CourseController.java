@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ysh.my_course.dto.course.AddCourseDto;
 import com.ysh.my_course.dto.course.ResponseCourseDto;
 import com.ysh.my_course.dto.course.UpdateCourseDto;
+import com.ysh.my_course.dto.enroll.RequestEnrollDto;
 import com.ysh.my_course.service.CourseService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -75,5 +76,45 @@ public class CourseController {
 		courseService.deleteCourse(courseId);
 		
 		return ResponseEntity.status(HttpStatus.OK).body("deleteSuccess");
+	}
+	
+	/*
+	 *	수강 확인/신청/취소  
+	 */
+	@PostMapping("/enroll/check")
+	public ResponseEntity<String> checkEnrollment(@RequestBody RequestEnrollDto dto, HttpServletRequest request){
+		HttpSession session = request.getSession();
+		if(session.getAttribute("loginEmail") == null) {
+			return ResponseEntity.status(HttpStatus.OK).body("cantCheck");
+		}
+		try {
+			log.info(String.format("Called checkEnrollment [courseId : %d, userEmail : %s]", dto.getCourseId(), dto.getUserEmail()));
+			
+			return courseService.checkEnrollment(dto);
+		}catch(IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+		}
+
+	}
+	
+	
+	@PostMapping("/enroll")
+	public ResponseEntity<String> enrollCourse(@RequestBody RequestEnrollDto dto, HttpServletRequest request){
+		HttpSession session = request.getSession();
+		if(session.getAttribute("loginEmail") == null) {
+			return ResponseEntity.status(HttpStatus.OK).body("needToLogin");
+		}
+		try {
+			return courseService.enrollCourse(dto);
+		}catch(IllegalArgumentException e) {
+			log.error(e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+		}
+		
+		
 	}
 }

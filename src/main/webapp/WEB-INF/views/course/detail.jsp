@@ -3,6 +3,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:parseDate value="${course.createdDt }" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedDatetime" type="both" />
+
+<%
+	String loginEmail = (String)session.getAttribute("loginEmail");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,6 +43,9 @@
 							<td class="col_2"><fmt:formatDate pattern="yyyy년 MM월 dd일" value="${parsedDatetime }" /></td>
 						</tr>
 					</table>
+					<div class="apply">
+						<button id="enroll_btn" type="button" onClick="enroll()">수강 신청</button>
+					</div>
 				</div>
 			</div>
 			<hr />
@@ -54,9 +61,99 @@
 </div>
 </body>
 <script type="text/javascript">
+
+	window.addEventListener("load", () => {
+		let courseId = ${course.id};
+		let loginEmail = "<%= loginEmail %>";
+		
+		let reqJson = JSON.stringify({"courseId": courseId, "userEmail": loginEmail});
+		
+		if(loginEmail !== "null"){
+			$.ajax({
+				url: "/api/enroll/check",
+				method: "POST",
+				async: false,
+				contentType: "application/json",
+				data: reqJson,
+				success: (data, textStatus, jqXHR) => {
+					console.log(data);
+					if(jqXHR.status === 200){
+						if(data === "alreadyEnrolled"){
+							$("#enroll_btn")
+								.text("수강 취소")
+								.attr("onClick", "cancelCourse()");
+							/*
+							$("#enroll_btn").css("display", "none");
+							let parent = document.getElementsByClassName("apply");
+							let p = document.createElement("p");
+							p.innerText = "이미 수강 신청한 강좌입니다.";
+							parent[0].append(p);
+							*/
+							// $("#enroll_btn").attr("disabled", true);
+						}else if(data === "overloaded"){
+							$("#enroll_btn").css("display", "none");
+							let parent = document.getElementsByClassName("apply");
+							let p = document.createElement("p");
+							p.innerText = "정원이 초과되었습니다.";
+							parent[0].append(p);
+						}
+					}
+				},
+				error: (data, error) => {
+					console.error(data);
+					console.error(error);
+				}
+			});
+		}
+	});
+	
 	let goBack = () => {
 		let referrer = document.referrer;
 		location.replace(referrer);
 	} 
+	
+	let enroll = () => {
+		let courseId = ${course.id};
+		let loginEmail = "<%= loginEmail %>";
+		
+		let reqJson = JSON.stringify({"courseId": courseId, "userEmail": loginEmail});
+		$.ajax({
+			url: "/api/enroll",
+			type: "POST",
+			contentType: "application/json",
+			async: true,
+			data : reqJson,
+			success: (data, textStatus, jqXHR) => {
+				console.log(data);
+				console.log(textStatus);
+				console.log(jqXHR);
+				if(jqXHR.status === 200){
+					if(data === 'needToLogin'){
+						if(confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?")){
+							location.replace("/login");						
+						}
+					}else if(data === "enrolled"){
+						alert("수강신청이 완료되었습니다!");
+						location.reload(true);
+					}else if(data === "overloaded"){
+						alert("정원이 초과되었습니다.");
+						location.reload(true);
+					}else if(data === "alreadyEnrolled"){
+						alert("이미 신청한 강좌입니다!");
+						location.reload(true);
+					}
+					
+				}
+			},
+			error: (data, error) => {
+				console.error(data);
+				console.error(error);
+			}
+		});
+	}
+	
+	let cancelCourse = () => {
+		console.log("cancel course");
+	}
 </script>
 </html>

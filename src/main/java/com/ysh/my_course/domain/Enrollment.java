@@ -17,47 +17,40 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @Getter
+@NoArgsConstructor
 @Entity
-public class Course {
+public class Enrollment {
+	// 강좌 신청 테이블
+	
+	/*
+	 * 1. 강의 ID
+	 * 2. User ID
+	 * 
+	 * 
+	 */
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
 	@Column
-	private String courseName;
+	private Long enrollmentId;
 	
-	@Column
-	private int maxAttendee;
-	
-	@Column(columnDefinition = "TEXT", nullable = false)
-	private String content;
-	
-	@Column
-	@CreationTimestamp
-	@Temporal(TemporalType.TIMESTAMP)
-	private LocalDateTime createdDt;
-	
-	@Column
-	private LocalDateTime closingDt;
+	@ManyToOne
+	@JoinColumn(name = "course_id")
+	private Course course;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_email")
 	private User user;
 	
+	@CreationTimestamp
+	@Temporal(TemporalType.TIMESTAMP)
+	private LocalDateTime enrolledDt;
+	
 	@Builder
-	public Course(String courseName, String content, String maxAttendee, User user) {
-		this.courseName = courseName;
-		this.content = content;
-		this.maxAttendee = Integer.parseInt(maxAttendee);
+	public Enrollment(Course course, User user) {
+		this.course = course;
 		this.user = user;
 	}
 	
-	public void update(String courseName, int maxAttendee, String content) {
-		this.courseName = courseName;
-		this.maxAttendee = maxAttendee;
-		this.content = content;
-	}
 }
