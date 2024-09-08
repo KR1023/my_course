@@ -1,7 +1,6 @@
 package com.ysh.my_course.service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -190,4 +189,17 @@ public class CourseService {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error");
 	}
 	
+	@Transactional
+	public String cancelCourse(RequestEnrollDto dto) throws IllegalArgumentException, Exception{
+		Course course = courseRepository.findById(dto.getCourseId())
+				.orElseThrow(() -> new IllegalArgumentException((String.format("Course is not found.[courseId : %s]", dto.getCourseId()))));
+		User user = userRepository.findByEmail(dto.getUserEmail()); 
+		
+		if(user != null) {
+			enrollRepository.deleteByCourseAndUser(course, user);
+			return "success";
+		}else {
+			return "userNotFound";
+		}
+	}
 }

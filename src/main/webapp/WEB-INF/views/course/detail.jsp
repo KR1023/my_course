@@ -105,6 +105,7 @@
 					}
 				},
 				error: (data, error) => {
+					alert("오류가 발생했습니다. 잠시 후에 다시 시도해 주세요.");
 					console.error(data);
 					console.error(error);
 				}
@@ -150,6 +151,7 @@
 				}
 			},
 			error: (data, error) => {
+				alert("오류가 발생했습니다. 잠시 후에 다시 시도해 주세요.");
 				console.error(data);
 				console.error(error);
 			}
@@ -157,7 +159,37 @@
 	}
 	
 	let cancelCourse = () => {
-		console.log("cancel course");
+		let courseId = ${course.id};
+		let loginEmail = "<%= loginEmail %>";
+		
+		let reqJson = JSON.stringify({"courseId": courseId, "userEmail": loginEmail});
+		
+		$.ajax({
+			url: "/api/enroll/cancel",
+			type: "POST",
+			contentType: "application/json",
+			aysnc: true,
+			data: reqJson,
+			success: (data, textStatus, jqXHR) => {
+				console.log(data);
+				console.log(textStatus);
+				console.log(jqXHR);
+				if(jqXHR.status === 200){
+					if(data === "deleteSucceeded"){
+						alert("신청이 취소되었습니다.");
+						location.reload(true);
+					}else if(data === "userNotFound"){
+						alert("오류가 발생했습니다. 다시 로그인해 주세요.");
+						location.reload(true);
+					}
+				}
+			},
+			error: (data, error) => {
+				alert("오류가 발생했습니다. 잠시 후에 다시 시도해 주세요.");
+				console.error(data);
+				console.error(error);
+			}
+		});
 	}
 </script>
 </html>

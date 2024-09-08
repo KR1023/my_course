@@ -10,4 +10,6 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, Long>{
 	long countByCourse(Course course);
 	
 	Enrollment findByCourseAndUser(Course course, User user);
+	
+	void deleteByCourseAndUser(Course course, User user);
 }

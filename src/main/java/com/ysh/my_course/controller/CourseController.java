@@ -114,7 +114,29 @@ public class CourseController {
 		}catch(Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 		}
+	}
+	
+	@PostMapping("/enroll/cancel")
+	public ResponseEntity<String> cancelCourse(@RequestBody RequestEnrollDto dto, HttpServletRequest request){
+		HttpSession session = request.getSession();
+		if(session.getAttribute("loginEmail") == null) {
+			return ResponseEntity.status(HttpStatus.OK).body("needToLogin");
+		}
 		
-		
+		try {
+			String result = courseService.cancelCourse(dto);
+			if(result.equals("success"))
+				return ResponseEntity.status(HttpStatus.OK).body("deleteSucceeded");
+			else if(result.equals("userNotFound"))
+				return ResponseEntity.status(HttpStatus.OK).body("userNotFound");
+			else
+				return ResponseEntity.status(HttpStatus.OK).body("error");
+		}catch(IllegalArgumentException e) {
+			log.error(e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		}catch(Exception e) {
+			log.error(e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+		}
 	}
 }
