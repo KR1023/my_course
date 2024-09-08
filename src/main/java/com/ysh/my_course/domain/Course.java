@@ -48,16 +48,18 @@ public class Course {
 	private User user;
 	
 	@Builder
-	public Course(String courseName, String content, String maxAttendee, User user) {
+	public Course(String courseName, String content, String maxAttendee, LocalDateTime closingDt, User user) {
 		this.courseName = courseName;
 		this.content = content;
 		this.maxAttendee = Integer.parseInt(maxAttendee);
+		this.closingDt = closingDt;
 		this.user = user;
 	}
 	
-	public void update(String courseName, int maxAttendee, String content) {
+	public void update(String courseName, int maxAttendee, String content, LocalDateTime closingDt) {
 		this.courseName = courseName;
 		this.maxAttendee = maxAttendee;
 		this.content = content;
+		this.closingDt = closingDt; 
 	}
 }

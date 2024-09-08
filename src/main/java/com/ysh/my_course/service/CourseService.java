@@ -42,6 +42,7 @@ public class CourseService {
 				.courseName(dto.getCourseName())
 				.content(dto.getContent())
 				.maxAttendee(dto.getMaxAttendee())
+				.closingDt(dto.getClosingDt())
 				.user(user)
 				.build();
 		
@@ -92,7 +93,7 @@ public class CourseService {
 		Course course = courseRepository.findById(courseId)
 				.orElseThrow(() -> new IllegalArgumentException(String.format("Course is not found. [courseId : %s]", courseId)));
 		
-		course.update(dto.getCourseName(), Integer.parseInt(dto.getMaxAttendee()), dto.getContent());
+		course.update(dto.getCourseName(), Integer.parseInt(dto.getMaxAttendee()), dto.getContent(), dto.getClosingDt());
 		
 		courseRepository.save(course);
 		
