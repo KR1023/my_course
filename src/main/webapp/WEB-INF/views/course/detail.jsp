@@ -68,7 +68,6 @@
 		
 		let reqJson = JSON.stringify({"courseId": courseId, "userEmail": loginEmail});
 		
-		if(loginEmail !== "null"){
 			$.ajax({
 				url: "/api/enroll/check",
 				method: "POST",
@@ -96,6 +95,12 @@
 							let p = document.createElement("p");
 							p.innerText = "정원이 초과되었습니다.";
 							parent[0].append(p);
+						}else if(data === "closed"){
+							$("#enroll_btn").css("display", "none");
+							let parent = document.getElementsByClassName("apply");
+							let p = document.createElement("p");
+							p.innerText = "마감되었습니다.";
+							parent[0].append(p);
 						}
 					}
 				},
@@ -104,7 +109,6 @@
 					console.error(error);
 				}
 			});
-		}
 	});
 	
 	let goBack = () => {

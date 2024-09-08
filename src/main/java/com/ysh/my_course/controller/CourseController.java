@@ -84,9 +84,9 @@ public class CourseController {
 	@PostMapping("/enroll/check")
 	public ResponseEntity<String> checkEnrollment(@RequestBody RequestEnrollDto dto, HttpServletRequest request){
 		HttpSession session = request.getSession();
-		if(session.getAttribute("loginEmail") == null) {
-			return ResponseEntity.status(HttpStatus.OK).body("cantCheck");
-		}
+//		if(session.getAttribute("loginEmail") == null) {
+//			return ResponseEntity.status(HttpStatus.OK).body("cantCheck");
+//		}
 		try {
 			log.info(String.format("Called checkEnrollment [courseId : %d, userEmail : %s]", dto.getCourseId(), dto.getUserEmail()));
 			

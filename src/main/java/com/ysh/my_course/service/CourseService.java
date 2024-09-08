@@ -1,5 +1,6 @@
 package com.ysh.my_course.service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -124,14 +125,17 @@ public class CourseService {
 		 * 3. 마감된 강좌.
 		 * 4. 신청 가능 강좌
 		 */
-		Date date = new Date();
-		log.info("date " + date);
+		LocalDateTime now = LocalDateTime.now();
 		
 		Course course = courseRepository.findById(dto.getCourseId())
 				.orElseThrow(() -> new IllegalArgumentException((String.format("Course is not found.[courseId : %s]", dto.getCourseId()))));
 		User user = userRepository.findByEmail(dto.getUserEmail());
 		
 		Enrollment enrollment = enrollRepository.findByCourseAndUser(course, user);
+		
+		if(now.isAfter(course.getClosingDt())) {
+			return ResponseEntity.status(HttpStatus.OK).body("closed");
+		}
 		
 		if(enrollment != null) {
 			return ResponseEntity.status(HttpStatus.OK).body("alreadyEnrolled");
@@ -148,34 +152,42 @@ public class CourseService {
 	}
 	
 	public ResponseEntity<String> enrollCourse(RequestEnrollDto dto) {
+		LocalDateTime now = LocalDateTime.now();
+		
 		Course course = courseRepository.findById(dto.getCourseId())
 							.orElseThrow(() -> new IllegalArgumentException((String.format("Course is not found.[courseId : %s]", dto.getCourseId()))));
 		User user = userRepository.findByEmail(dto.getUserEmail());
 		
-		Enrollment enrollment = enrollRepository.findByCourseAndUser(course, user);
-		
-		if(enrollment != null) {
-			log.info(String.format("enrollment's courseId : %d / userEmail : %s",enrollment.getCourse().getId(), enrollment.getUser().getEmail()));
-			return ResponseEntity.status(HttpStatus.OK).body("alreadyEnrolled");
-		}
-		
-		int maxAttendee = course.getMaxAttendee();
-		long enrolled = enrollRepository.countByCourse(course);
-		
-		log.info(String.format("maxAttendee : %d / enrolled cnt : %d", maxAttendee, enrolled));
-		
-		if(enrolled < maxAttendee) {
-			enrollRepository.save(Enrollment.builder()
-					.course(course)
-					.user(user)
-					.build());
+		if( user != null) {
+			Enrollment enrollment = enrollRepository.findByCourseAndUser(course, user);
 			
-			return ResponseEntity.status(HttpStatus.OK).body("enrolled");
-		}else if(enrolled == maxAttendee){
-			return ResponseEntity.status(HttpStatus.OK).body("overloaded");
-		}else {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error");
+			if(enrollment != null) {
+				log.info(String.format("enrollment's courseId : %d / userEmail : %s",enrollment.getCourse().getId(), enrollment.getUser().getEmail()));
+				return ResponseEntity.status(HttpStatus.OK).body("alreadyEnrolled");
+			}
+			
+			if(now.isAfter(course.getClosingDt())) {
+				return ResponseEntity.status(HttpStatus.OK).body("closed");
+			}
+			
+			int maxAttendee = course.getMaxAttendee();
+			long enrolled = enrollRepository.countByCourse(course);
+			
+			log.info(String.format("maxAttendee : %d / enrolled cnt : %d", maxAttendee, enrolled));
+			
+			if(enrolled < maxAttendee) {
+				enrollRepository.save(Enrollment.builder()
+						.course(course)
+						.user(user)
+						.build());
+				return ResponseEntity.status(HttpStatus.OK).body("enrolled");
+			}else if(enrolled == maxAttendee){
+				return ResponseEntity.status(HttpStatus.OK).body("overloaded");
+			}else {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error");
+			}
 		}
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("error");
 	}
 	
 }
