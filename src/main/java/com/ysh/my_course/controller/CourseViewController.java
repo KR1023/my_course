@@ -44,4 +44,13 @@ public class CourseViewController {
 		return "course/detail";
 		
 	}
+	@GetMapping("/course/add")
+	public String addCourseView(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		if(session.getAttribute("loginEmail") == null) {
+			return "error/error_403";
+		}
+		
+		return "course/add";
+	}
 }
