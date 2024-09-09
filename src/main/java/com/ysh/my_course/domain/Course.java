@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Builder;
@@ -47,20 +48,31 @@ public class Course {
 	@ManyToOne
 	@JoinColumn(name = "user_email")
 	private User user;
+
+	@OneToOne
+	@JoinColumn(name = "file_id")
+	private UploadedFile file;
 	
 	@Builder
-	public Course(String courseName, String content, String maxAttendee, LocalDate closingDt, User user) {
+	public Course(String courseName, String content, String maxAttendee, LocalDate closingDt, User user, UploadedFile file) {
 		this.courseName = courseName;
 		this.content = content;
 		this.maxAttendee = Integer.parseInt(maxAttendee);
 		this.closingDt = closingDt;
 		this.user = user;
+		this.file = file;
 	}
 	
-	public void update(String courseName, int maxAttendee, String content, LocalDate closingDt) {
+	public void update(String courseName, int maxAttendee, String content, LocalDate closingDt, UploadedFile file) {
 		this.courseName = courseName;
 		this.maxAttendee = maxAttendee;
 		this.content = content;
-		this.closingDt = closingDt; 
+		this.closingDt = closingDt;
+		this.file = file;
 	}
+
+	public void setFile(UploadedFile file) {
+		this.file = file;
+	}
+	
 }

@@ -42,10 +42,9 @@ window.addEventListener("load", () => {
 		<h2>강좌 등록</h2>
 		<div class="input_container">
 			<div class="thumbnail">
-				<p>썸네일</p>
-				<img src="/images/dashboard.svg" />
-				<button id="img_upload_btn">이미지 업로드</button>
-				<span>파일 이름 : dashboard.svg</span>
+				<img id="uploaded_image" src="/images/dashboard.svg" />
+				<button id="img_upload_btn" onClick="uploadImage()">이미지 업로드</button>
+				<span id="uploaded_filename">파일을 업로드해 주세요.</span>
 			</div>
 			<div class="course_info">
 				<div class="title">
@@ -83,13 +82,50 @@ window.addEventListener("load", () => {
 </body>
 
 <script type="text/javascript">
+let fileId = null;
 
 let goBack = () => {
 	let referrer = document.referrer;
 	location.replace(referrer);
 };
 
+let uploadImage = () => {
+	const formData = new FormData();
+	const fileInput = document.createElement('input');
+	
+    fileInput.setAttribute("type", "file");
+    fileInput.setAttribute("accept", ".jpg,.jpeg,.png");
+    fileInput.setAttribute("multiple", false);
+    fileInput.click();
+    
+    
+    
+    fileInput.addEventListener('change', () => {
+    	let file = fileInput.files[0];
+    	formData.append("files", file);
+    	
+    	$.ajax({
+    		url: "/image",
+    		type: "POST",
+    		contentType: false,
+    		processData: false,
+    		data: formData,
+    		success: (data, textStatus, jqXHR) => {
+    			if(jqXHR.status === 200){
+    				$("#uploaded_image").attr("src", data.refFilePath);
+    				$("#uploaded_filename").text(data.filename);
+    				fileId = data.fileId;
+    			}
+    		},
+    		error: (data, error) => {
+    			console.error(data);
+    			console.error(error);
+    		}
+    	});
+    });
+    
 
+}
 
 const toolbarOptions = [
 	[{size: ['small', false, 'large', 'huge']}],
@@ -131,7 +167,6 @@ let addCourse = () => {
 	const date = new Date();
 	const today = `${'${date.getFullYear()}${date.getMonth()}${date.getDate()}'}`;
 	
-	console.log(quill.root.innerHTML);
 	const courseName = $("#course_name").val();
 	const maxAttendee = $("#sel_max").val();
 	const closingDt = $("#sel_date").val();
@@ -155,25 +190,32 @@ let addCourse = () => {
 			"maxAttendee": maxAttendee,
 			"closingDt": closingDt.replaceAll("-", ""),
 			"content": quill.root.innerHTML,
+			"fileId": fileId,
 			"userEmail": userEmail
 	};
 	
-	$.ajax({
-		url: "/api/course",
-		type: "POST",
-		async: false,
-		contentType: "application/json",
-		data: JSON.stringify(reqJson),
-		success: (data, textStatus, jqXHR) => {
-			if(jqXHR.status === 200){
-				location.replace("/course/" + data.id);
+	if(confirm("강의를 등록하시겠습니까?")){
+		$.ajax({
+			url: "/api/course",
+			type: "POST",
+			async: false,
+			contentType: "application/json",
+			data: JSON.stringify(reqJson),
+			success: (data, textStatus, jqXHR) => {
+				if(jqXHR.status === 200){
+					alert("강의가 등록되었습니다.");
+					location.replace("/course/" + data.id);
+				}
+			},
+			error: (data, error) => {
+				console.error(data);
+				console.error(error);
 			}
-		},
-		error: (data, error) => {
-			console.error(data);
-			console.error(error);
-		}
-	});
+		});	
+	}else{
+		return;
+	}
+	
 };
 
 

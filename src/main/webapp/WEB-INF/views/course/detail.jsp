@@ -28,7 +28,15 @@
 				<p>${course.courseName}<p>
 			</div>
 			<div class="course_info">
-				<img src="/images/dashboard.svg" alt="image"/>
+				<c:choose>
+					<c:when test="${ course.refFilepath == null}">
+						<img src="/images/dashboard.svg" alt="course_img" />
+					</c:when>
+					<c:otherwise>
+						<img src="${course.refFilepath }" alt="image"/>
+					</c:otherwise>
+				</c:choose>
+				
 				<div class="info">
 					<table>
 						<tr>
@@ -53,8 +61,9 @@
 					</div>
 				</div>
 			</div>
-			<hr />
+			
 			<div class="course_content">
+				<hr />
 				<h2>강의 소개</h2>
 				<div class="content">
 					${course.content }

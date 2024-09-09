@@ -16,6 +16,7 @@ public class UpdateCourseDto {
 	private String courseName;
 	private String maxAttendee;
 	private String content;
+	private Long fileId;
 	
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyyMMdd")

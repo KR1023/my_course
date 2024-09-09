@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "IMG.PATH",
+  "type": "java.lang.String",
+  "description": "A description for 'IMG.PATH'"
+}]}

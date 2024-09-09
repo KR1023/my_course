@@ -43,7 +43,15 @@
 	            	<c:otherwise>
 	            		<c:forEach var="course" items="${list.content }">
 	            			<div class="course" onClick="getCourse(${course.id })">
-			                    <img src="./images/dashboard.svg" alt="course_img" />
+	            				<c:choose>
+	            					<c:when test="${course.refFilepath == null }">
+	            						<img src="./images/dashboard.svg" alt="course_img" />	
+	            					</c:when>
+	            					<c:otherwise>
+	            						<img src="${course.refFilepath }" alt="course_img" />
+	            					</c:otherwise>
+	            				</c:choose>
+			                    
 			                    <div class="desc">
 			                        <p>${course.courseName }</p>
 			                        <p>수강 인원 : ${course.maxAttendee }</p>

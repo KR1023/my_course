@@ -45,7 +45,7 @@ public class CourseController {
 	public ResponseEntity<ResponseCourseDto> getCourse(HttpServletRequest request, @PathVariable(name = "courseId") Long courseId){
 		HttpSession session = request.getSession();
 		
-		log.info("[courseId = " + courseId + "]");
+		log.info("Called getCourse : [courseId = " + courseId + "]");
 		ResponseCourseDto course = courseService.getCourse(courseId);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(course); 
@@ -53,9 +53,8 @@ public class CourseController {
 	
 	@GetMapping("/course")
 	public ResponseEntity<Page<ResponseCourseDto>> getCourses(@RequestParam(required= false, defaultValue="0", value="page") int pageNo, HttpServletRequest request) throws IllegalArgumentException{
-		HttpSession session = request.getSession();
 		
-		log.info("getCourses");
+		log.info("Called getCourses");
 		
 		Page<ResponseCourseDto> list = courseService.getCourses(pageNo);
 		

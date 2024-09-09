@@ -57,6 +57,7 @@
 	justify-content: space-around;
 	align-items: center;
 	width: 100%;
+	margin-top: 35px;
 }
 
 .detail .wrapper .course_detail .course_info img{
@@ -111,6 +112,7 @@
 
 .detail .wrapper .course_detail .course_content{
 	width: 100%;
+	margin-top: 45px;
 }
 
 .detail .wrapper .course_detail .course_content .content{

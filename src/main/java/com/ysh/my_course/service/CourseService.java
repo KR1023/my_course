@@ -1,7 +1,6 @@
 package com.ysh.my_course.service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.ysh.my_course.domain.Course;
 import com.ysh.my_course.domain.Enrollment;
+import com.ysh.my_course.domain.UploadedFile;
 import com.ysh.my_course.domain.User;
 import com.ysh.my_course.dto.course.AddCourseDto;
 import com.ysh.my_course.dto.course.ResponseCourseDto;
@@ -22,6 +22,7 @@ import com.ysh.my_course.dto.course.UpdateCourseDto;
 import com.ysh.my_course.dto.enroll.RequestEnrollDto;
 import com.ysh.my_course.repository.CourseRepository;
 import com.ysh.my_course.repository.EnrollmentRepository;
+import com.ysh.my_course.repository.UploadedFileRepository;
 import com.ysh.my_course.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
@@ -36,14 +37,25 @@ public class CourseService {
 	private final UserRepository userRepository;
 	private final CourseRepository courseRepository;
 	private final EnrollmentRepository enrollRepository;
+	private final UploadedFileRepository fileRepository;
 	
 	public Course addCourse(AddCourseDto dto) {
 		User user = userRepository.findByEmail(dto.getUserEmail());
+		
+		UploadedFile file = null;
+		
+		if(dto.getFileId() != null) {
+			file = fileRepository.findById(dto.getFileId())
+					.orElseThrow(() -> new IllegalArgumentException(String.format("File not found : [%d]", dto.getFileId())));
+		}
+		
+		
 		Course course = Course.builder()
 				.courseName(dto.getCourseName())
 				.content(dto.getContent())
 				.maxAttendee(dto.getMaxAttendee())
 				.closingDt(dto.getClosingDt())
+				.file(file)
 				.user(user)
 				.build();
 		
@@ -54,6 +66,11 @@ public class CourseService {
 		Course course = courseRepository.findById(courseId)
 				.orElseThrow(() -> new IllegalArgumentException(String.format("Course is not found.[courseId : %s]", courseId)));
 		
+		if(course.getFile() == null) {
+			course.setFile(new UploadedFile());
+		}
+		
+		
 		ResponseCourseDto responseDto = ResponseCourseDto.builder()
 											.id(course.getId())
 											.courseName(course.getCourseName())
@@ -62,6 +79,7 @@ public class CourseService {
 											.createdDt(course.getCreatedDt())
 											.closeDt(course.getClosingDt())
 											.userEmail(course.getUser().getEmail())
+											.refFilepath(course.getFile().getRefFilepath())
 											.build();
 		return responseDto;
 	}
@@ -70,16 +88,34 @@ public class CourseService {
 	 	List<Course> courseList = courseRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
 		
 		List<ResponseCourseDto> dtoList = courseList.stream()
-				.map(e -> ResponseCourseDto
-						.builder()
-						.id(e.getId())
-						.courseName(e.getCourseName())
-						.maxAttendee(e.getMaxAttendee())
-						.content(e.getContent())
-						.createdDt(e.getCreatedDt())
-						.closeDt(e.getClosingDt())
-						.userEmail(e.getUser().getEmail())
-						.build())
+				.map(e -> {
+					if(e.getFile() != null) {
+						return 
+								ResponseCourseDto
+								.builder()
+								.id(e.getId())
+								.courseName(e.getCourseName())
+								.maxAttendee(e.getMaxAttendee())
+								.content(e.getContent())
+								.createdDt(e.getCreatedDt())
+								.closeDt(e.getClosingDt())
+								.userEmail(e.getUser().getEmail())
+								.refFilepath(e.getFile().getRefFilepath())
+								.build();
+					}else {
+						return ResponseCourseDto
+								.builder()
+								.id(e.getId())
+								.courseName(e.getCourseName())
+								.maxAttendee(e.getMaxAttendee())
+								.content(e.getContent())
+								.createdDt(e.getCreatedDt())
+								.closeDt(e.getClosingDt())
+								.userEmail(e.getUser().getEmail())
+								.refFilepath(null)
+								.build();
+					}
+				})
 				.collect(Collectors.toList());
 		
 		PageRequest pageRequest= PageRequest.of(pageNo, 15);
@@ -96,8 +132,10 @@ public class CourseService {
 	public ResponseCourseDto updateCourse(Long courseId, UpdateCourseDto dto) {
 		Course course = courseRepository.findById(courseId)
 				.orElseThrow(() -> new IllegalArgumentException(String.format("Course is not found. [courseId : %s]", courseId)));
+		UploadedFile file = fileRepository.findById(dto.getFileId())
+				.orElseThrow(() -> new IllegalArgumentException(String.format("File is not found. [fileId : %s]", dto.getFileId())));
 		
-		course.update(dto.getCourseName(), Integer.parseInt(dto.getMaxAttendee()), dto.getContent(), dto.getClosingDt());
+		course.update(dto.getCourseName(), Integer.parseInt(dto.getMaxAttendee()), dto.getContent(), dto.getClosingDt(), file);
 		
 		courseRepository.save(course);
 		

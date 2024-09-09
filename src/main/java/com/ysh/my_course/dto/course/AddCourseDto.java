@@ -25,6 +25,7 @@ public class AddCourseDto {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyyMMdd")
 	private LocalDate closingDt;
 	
+	private Long fileId;
 	private String userEmail;
 	
 	
