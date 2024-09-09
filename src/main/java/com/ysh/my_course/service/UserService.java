@@ -1,6 +1,8 @@
 package com.ysh.my_course.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -24,7 +26,9 @@ public class UserService {
 	private final CryptoUtil cryptoUtil;
 	private final ConfigUtil configUtil;
 	
-	public boolean login(String email, String password) {
+	public Map<String, String> login(String email, String password) {
+		Map<String, String> result = new HashMap<String, String>();
+		
 		String secretKey = configUtil.getProperty("AES.KEY");
 		String iv = configUtil.getProperty("AES.IV");
 		
@@ -34,7 +38,9 @@ public class UserService {
 			User user = userRepository.findByEmail(email);
 			
 			if(user == null) 
-				return false;
+				result.put("result", "false");
+			
+			result.put("userAuth", user.getAuth());
 			
 			String salt = user.getSalt();
 			String encPwd = user.getPassword();
@@ -42,14 +48,14 @@ public class UserService {
 			String toCheck = cryptoUtil.getEncrypt(decrypted, salt);
 			
 			if(toCheck.equals(encPwd))
-				return true;
+				result.put("result", "true");
 			else
-				return false;
+				result.put("result", "false");
 			
 		}catch(Exception e) {
 			log.error(e.getMessage());
 		}
-			return false;
+			return result;
 	}
 	
 	public User addUser(AddUserDto dto) throws Exception {

@@ -1,6 +1,7 @@
 package com.ysh.my_course.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,12 +35,13 @@ public class UserController {
 	public ResponseEntity<String> login(HttpServletRequest request, @RequestBody RequestLoginDto dto) {
 		log.info(dto.getEmail() + " / " + dto.getPassword());
 		
-		boolean result = userService.login(dto.getEmail(), dto.getPassword());
+		Map<String, String> result = userService.login(dto.getEmail(), dto.getPassword());
 		
-		if(result) {
+		if(result.get("result").equals("true")) {
 			HttpSession session = request.getSession();
 			session.setAttribute("session", session.getId());
 			session.setAttribute("loginEmail", dto.getEmail());
+			session.setAttribute("userAuth", result.get("userAuth"));
 			
 			return ResponseEntity.status(HttpStatus.OK).body("loginSuccess");
 		}else {
