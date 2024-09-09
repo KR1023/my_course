@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ysh.my_course.domain.Course;
 import com.ysh.my_course.dto.course.AddCourseDto;
 import com.ysh.my_course.dto.course.ResponseCourseDto;
 import com.ysh.my_course.dto.course.UpdateCourseDto;
@@ -32,12 +33,12 @@ public class CourseController {
 	private final CourseService courseService;
 	
 	@PostMapping("/course")
-	public ResponseEntity<String> addCourse(HttpServletRequest request, @RequestBody AddCourseDto dto){
+	public ResponseEntity<Course> addCourse(HttpServletRequest request, @RequestBody AddCourseDto dto){
 		HttpSession session = request.getSession();
 		
-		log.info(dto.toString());
-		courseService.addCourse(dto);
-		return ResponseEntity.status(HttpStatus.OK).body("addedCourse");
+		log.info(String.format("Called addCourse [dto : %s]", dto.toString()));
+		Course course = courseService.addCourse(dto);
+		return ResponseEntity.status(HttpStatus.OK).body(course);
 	}
 	
 	@GetMapping("/course/{courseId}")

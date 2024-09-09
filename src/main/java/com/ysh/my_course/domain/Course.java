@@ -1,5 +1,6 @@
 package com.ysh.my_course.domain;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,7 +27,7 @@ public class Course {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column
+	@Column(nullable = false)
 	private String courseName;
 	
 	@Column
@@ -41,14 +42,14 @@ public class Course {
 	private LocalDateTime createdDt;
 	
 	@Column
-	private LocalDateTime closingDt;
+	private LocalDate closingDt;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_email")
 	private User user;
 	
 	@Builder
-	public Course(String courseName, String content, String maxAttendee, LocalDateTime closingDt, User user) {
+	public Course(String courseName, String content, String maxAttendee, LocalDate closingDt, User user) {
 		this.courseName = courseName;
 		this.content = content;
 		this.maxAttendee = Integer.parseInt(maxAttendee);
@@ -56,7 +57,7 @@ public class Course {
 		this.user = user;
 	}
 	
-	public void update(String courseName, int maxAttendee, String content, LocalDateTime closingDt) {
+	public void update(String courseName, int maxAttendee, String content, LocalDate closingDt) {
 		this.courseName = courseName;
 		this.maxAttendee = maxAttendee;
 		this.content = content;

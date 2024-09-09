@@ -1,5 +1,6 @@
 package com.ysh.my_course.dto.course;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lombok.Builder;
@@ -17,11 +18,11 @@ public class ResponseCourseDto {
 	private int maxAttendee;
 	private String content;
 	private LocalDateTime createdDt;
-	private LocalDateTime closeDt;
+	private LocalDate closeDt;
 	private String userEmail;
 	
 	@Builder
-	public ResponseCourseDto(Long id, String courseName, int maxAttendee, String content, LocalDateTime createdDt, LocalDateTime closeDt, String userEmail) {
+	public ResponseCourseDto(Long id, String courseName, int maxAttendee, String content, LocalDateTime createdDt, LocalDate closeDt, String userEmail) {
 		this.id = id;
 		this.courseName = courseName;
 		this.maxAttendee = maxAttendee;

@@ -122,3 +122,45 @@
 	font-family: 'NanumSquareNeo';
 	padding-left: 10px;
 }
+
+.add_course .wrapper .input_container .course_info .btn_container{
+	width: 80%;
+	height: 50px;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	margin-top: 40%;
+}
+
+.add_course .wrapper .input_container .course_info .btn_container button{
+	margin:10px;
+	width: 80px;
+	height: 35px;
+	background: none;
+	border: 1px solid #C8C8C8;
+	border-radius: 7px;
+}
+
+.add_course .wrapper .input_container .course_info .btn_container button:hover{
+	cursor: pointer;
+	background: #666666;
+	color: #fff;	
+}
+
+.add_course .wrapper .content_container{
+	margin-top: 20px;
+	width: 100%;
+	padding: 10px;
+}
+
+.add_course .wrapper .content_container h3{
+	padding-left: 10px;
+}
+
+.add_course .wrapper .content_container .editor{
+	height: 600px;
+}
+
+.add_course .wrapper .content_container .editor .quill_editor{
+	height: 80%;
+}

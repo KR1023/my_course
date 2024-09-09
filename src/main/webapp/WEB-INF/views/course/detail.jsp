@@ -2,8 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:parseDate value="${course.createdDt }" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedDatetime" type="both" />
-<fmt:parseDate value="${course.closeDt }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedCloseDatetime" type="both" />
+<fmt:parseDate value="${course.createdDt }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDatetime" type="both" />
+<fmt:parseDate value="${course.closeDt }" pattern="yyyy-MM-dd" var="parsedCloseDatetime" type="both" />
 
 <%
 	String loginEmail = (String)session.getAttribute("loginEmail");
@@ -80,7 +80,6 @@
 				contentType: "application/json",
 				data: reqJson,
 				success: (data, textStatus, jqXHR) => {
-					console.log(data);
 					if(jqXHR.status === 200){
 						if(data === "alreadyEnrolled"){
 							$("#enroll_btn")
@@ -134,9 +133,6 @@
 			async: true,
 			data : reqJson,
 			success: (data, textStatus, jqXHR) => {
-				console.log(data);
-				console.log(textStatus);
-				console.log(jqXHR);
 				if(jqXHR.status === 200){
 					if(data === 'needToLogin'){
 						if(confirm("로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?")){
@@ -176,9 +172,6 @@
 			aysnc: true,
 			data: reqJson,
 			success: (data, textStatus, jqXHR) => {
-				console.log(data);
-				console.log(textStatus);
-				console.log(jqXHR);
 				if(jqXHR.status === 200){
 					if(data === "deleteSucceeded"){
 						alert("신청이 취소되었습니다.");

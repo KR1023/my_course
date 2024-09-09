@@ -1,5 +1,6 @@
 package com.ysh.my_course.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -127,7 +128,7 @@ public class CourseService {
 		 * 3. 마감된 강좌.
 		 * 4. 신청 가능 강좌
 		 */
-		LocalDateTime now = LocalDateTime.now();
+		LocalDate now = LocalDate.now();
 		
 		Course course = courseRepository.findById(dto.getCourseId())
 				.orElseThrow(() -> new IllegalArgumentException((String.format("Course is not found.[courseId : %s]", dto.getCourseId()))));
@@ -154,7 +155,7 @@ public class CourseService {
 	}
 	
 	public ResponseEntity<String> enrollCourse(RequestEnrollDto dto) {
-		LocalDateTime now = LocalDateTime.now();
+		LocalDate now = LocalDate.now();
 		
 		Course course = courseRepository.findById(dto.getCourseId())
 							.orElseThrow(() -> new IllegalArgumentException((String.format("Course is not found.[courseId : %s]", dto.getCourseId()))));
