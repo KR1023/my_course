@@ -2,7 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%
+	String auth = (String)session.getAttribute("userAuth");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,19 +20,7 @@
         <div class="wrapper">
             <jsp:include page="../common/header.jsp" />
             <hr />
-            <nav>
-                <div class="category" id="category_btn">
-                    <img src="./images/menu.svg" alt="category" />
-                    <div class="category_container" id="cat_container">
-			            <p>강의</p>
-			            <p>공지사항</p>
-			        </div>
-                </div>
-                <div class="search">
-                    <input type="text" name="course_name" placeholder="찾으시는 강의를 입력해 주세요."/>
-                    <img src="./images/search.svg" alt="search" />
-                </div>
-            </nav>
+            <jsp:include page="../common/navigation.jsp" />
 <!--             <div class="option">
                 <span>인기순</span>
                 <span>최신순</span>
@@ -106,43 +96,6 @@
     </div>
 </body>
 <script type="text/javascript">
-    var showCategory = false;
-
-    var target = document.getElementById("category_btn");
-    
-	window.addEventListener("click", (e) => {
-		showCategory = false;
-		target.children[0].src = "images/menu.svg";
-		$("#cat_container")
-			.css("opacity", "0")
-			.css("visibility", "hidden");
-	})
-    
-	
-    $("#category_btn").click((e) => {
-    	e.stopPropagation();
-    	// var categoryTop = window.pageYOffset + target.getBoundingClientRect().top;
-        // var categoryLeft = window.pageXOffset + target.getBoundingClientRect().left;
-        
-        var categoryTop = target.getBoundingClientRect().x;
-        var categoryLeft = target.getBoundingClientRect().y;
-        
-        if(!showCategory){
-        	target.children[0].src = "images/close.svg";
-            $("#cat_container")
-	            .css("top", `${categoryTop}px`)
-	            .css("left", `${categoryLeft}px`)
-	            .css("opacity", "1")
-	            .css("visibility", "visible");
-            showCategory = true;
-        }else if(showCategory){
-        	target.children[0].src = "images/menu.svg";
-            $("#cat_container")
-	            .css("opacity", "0")
-	            .css("visibility", "hidden");
-            showCategory = false;
-        }
-    });
     
 	/*
     let getCourse = (courseId) => {

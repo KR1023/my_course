@@ -53,4 +53,12 @@ public class CourseViewController {
 		
 		return "course/add";
 	}
+	
+	/**
+	 * 강의 관리
+	 */
+	@GetMapping("/course/manage")
+	public String manageCourse(HttpServletRequest request, Model model) {
+		return "/manage/course/course_manage";
+	}
 }
