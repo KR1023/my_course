@@ -69,6 +69,11 @@
 	color: #fff;
 }
 
+.add_course .wrapper .input_container .thumbnail span{
+	display: inline-block;
+	margin-left: 15px;	
+}
+
 .add_course .wrapper .input_container .course_info{
 	width: 400px;
 	margin-top: 20px;

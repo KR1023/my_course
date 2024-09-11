@@ -127,6 +127,41 @@ let uploadImage = () => {
 
 }
 
+const imageHandler = () => {
+	const input = document.createElement("input");
+	input.setAttribute('type', 'file');
+	input.setAttribute('accept', 'image/*');
+	input.click();
+	
+	input.addEventListener('change', () => {
+		const file = input.files[0];
+		const formData = new FormData();
+		formData.append('files', file);
+		
+		$.ajax({
+			url: '/image',
+			type: 'POST',
+			contentType: false,
+			processData: false,
+			async: false,
+			data: formData,
+			success: (data, textStatus, jqXHR) => {
+    			if(jqXHR.status === 200){
+    				const imgUrl = data.refFilePath;
+    				const editor = quill;
+    				
+    				const range = editor.getSelection();
+    				editor.insertEmbed(range.index, 'image', imgUrl);
+    			}
+    		},
+    		error: (data, error) => {
+    			console.error(data);
+    			console.error(error);
+    		}
+		})
+	})
+};
+
 const toolbarOptions = [
 	[{size: ['small', false, 'large', 'huge']}],
 	['bold', 'italic', 'underline', 'strike', 
@@ -138,12 +173,19 @@ const toolbarOptions = [
 	['blockquote', 'code-block'],
 	['link', 'image'],
 	['clean']
-
 ];
+
+
+
 
 const quill = new Quill("#quill_editor", {
 	modules: {
-		toolbar: toolbarOptions,
+		toolbar: {
+			container: toolbarOptions,
+			handlers: {
+				image: imageHandler
+			}
+		},
 		history: {
 			delay: 1000,
 			userOnly: true,
