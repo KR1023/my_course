@@ -66,6 +66,7 @@ public class CourseService {
 	public ResponseCourseDto getCourse(Long courseId) {
 		Course course = courseRepository.findById(courseId)
 				.orElseThrow(() -> new IllegalArgumentException(String.format("Course is not found.[courseId : %s]", courseId)));
+		int applicantCnt = Long.valueOf(enrollRepository.countByCourse(course)).intValue();
 		
 		if(course.getFile() == null) {
 			course.setFile(new UploadedFile());
@@ -75,10 +76,12 @@ public class CourseService {
 				.id(course.getId())
 				.courseName(course.getCourseName())
 				.maxAttendee(course.getMaxAttendee())
+				.applicant(applicantCnt)
 				.content(course.getContent())
 				.createdDt(course.getCreatedDt())
 				.closeDt(course.getClosingDt())
 				.userEmail(course.getUser().getEmail())
+				.instName(course.getUser().getName())
 				.fileId(course.getFile().getId())
 				.filename(course.getFile().getFilename())
 				.refFilepath(course.getFile().getRefFilepath())
@@ -87,39 +90,49 @@ public class CourseService {
 		return responseDto;
 	}
 	
-	public Page<ResponseCourseDto> getCourses(int pageNo, int pageSize, String auth, String userEmail) throws IllegalArgumentException{
+	public Page<ResponseCourseDto> getCourses(int pageNo, int pageSize, String courseName, String auth, String userEmail) throws IllegalArgumentException{
 		List<Course> courseList = null;
 		
 	 	List<ResponseCourseDto> dtoList = new ArrayList<>();
 	 	
 	 	if(auth.equals("manage")) {
-	 		courseList = courseRepository.findByUserEmail(userEmail, Sort.by(Sort.Direction.DESC, "id"));
+	 		if(courseName != null)
+//	 			courseList = courseRepository.findByCourseNameLike(userEmail, Sort.by(Sort.Direction.DESC, "id"));
+	 			courseList = courseRepository.findByUserEmailAndCourseNameContaining(userEmail, courseName, Sort.by(Sort.Direction.DESC, "id"));
+	 		else
+	 			courseList = courseRepository.findByUserEmail(userEmail, Sort.by(Sort.Direction.DESC, "id"));
 	 		
 	 		dtoList = courseList.stream()
 					.map(e -> {
 						if(e.getFile() != null) {
+							int applicantCnt = Long.valueOf(enrollRepository.countByCourse(e)).intValue();
 							return 
 									ResponseCourseDto
 									.builder()
 									.id(e.getId())
 									.courseName(e.getCourseName())
 									.maxAttendee(e.getMaxAttendee())
+									.applicant(applicantCnt)
 									.content(e.getContent())
 									.createdDt(e.getCreatedDt())
 									.closeDt(e.getClosingDt())
 									.userEmail(e.getUser().getEmail())
+									.instName(e.getUser().getName())
 									.refFilepath(e.getFile().getRefFilepath())
 									.build();
 						}else {
+							int applicantCnt = Long.valueOf(enrollRepository.countByCourse(e)).intValue();
 							return ResponseCourseDto
 									.builder()
 									.id(e.getId())
 									.courseName(e.getCourseName())
 									.maxAttendee(e.getMaxAttendee())
+									.applicant(applicantCnt)
 									.content(e.getContent())
 									.createdDt(e.getCreatedDt())
 									.closeDt(e.getClosingDt())
 									.userEmail(e.getUser().getEmail())
+									.instName(e.getUser().getName())
 									.refFilepath(null)
 									.build();
 						}
@@ -127,7 +140,11 @@ public class CourseService {
 					.collect(Collectors.toList());
 	 		
 	 	}else {
-	 		courseList = courseRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+	 		if(courseName != null) {
+	 			courseList = courseRepository.findByCourseNameContaining(courseName, Sort.by(Sort.Direction.DESC, "id"));
+	 		}else {
+	 			courseList = courseRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+	 		}
 	 		
 	 		dtoList = courseList.stream()
 					.map(e -> {

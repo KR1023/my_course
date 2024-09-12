@@ -14,6 +14,10 @@
 <link rel="stylesheet" href="/css/navigation.css" />
 <link rel="stylesheet" href="/css/index.css" />
 <script type="text/javascript" src="/javascript/jquery/jquery-3.7.1.min.js"></script>
+<script type="text/javascript">
+let inputName;
+
+</script>
 </head>
 <body>
 <div class="nav">
@@ -32,14 +36,15 @@
 		</div>
    	</div>
     <div class="search">
-    	<input type="text" name="course_name" placeholder="찾으시는 강의를 입력해 주세요."/>
-        <img src="/images/search.svg" alt="search" />
+    	<input id="course_name" type="text" name="course_name" placeholder="찾으시는 강의를 입력해 주세요." onkeydown="keyDown(this)"/>
+        <img src="/images/search.svg" alt="search" onClick="findCourses()"/>
     </div>
 </nav>
 </div>
 </body>
 <script type="text/javascript">
 var showCategory = false;
+
 
 var target = document.getElementById("category_btn");
 
@@ -76,5 +81,33 @@ $("#category_btn").click((e) => {
         showCategory = false;
     }
 });
+
+let findCourses = () => {
+	inputName = $("#course_name").val();
+	
+	const nameLength = inputName.length;
+	
+	if(nameLength > 0 && nameLength < 2){
+		alert("두 자 이상 입력해 주세요.");
+		return;
+	}else{
+		const { pathname } = window.location;
+		console.log(pathname);
+		if(pathname === '/course'){
+			location.href = '/course?courseName=' + inputName;
+		}else if(pathname === '/course/manage'){
+			location.href = '/course/manage?courseName=' + inputName;
+		}
+	}
+};
+
+let keyDown = () => {
+	const { keyCode } = event;
+	
+	if(keyCode === 13){
+		findCourses();
+	}
+}
+
 </script>
 </html>

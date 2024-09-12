@@ -23,11 +23,12 @@ public class CourseViewController {
 	private final CourseService courseService;
 	
 	@GetMapping("/course")
-	public String courseList(@RequestParam(required = false, defaultValue = "0", value = "page") int pageNo, HttpServletRequest request, Model model) {
+	public String courseList(@RequestParam(required = false, defaultValue = "0", value = "page") int pageNo, @RequestParam(name="courseName", required=false) String courseName, HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
 		log.info("Called courseList View");
 		try {
-			Page<ResponseCourseDto> dtoList = courseService.getCourses(pageNo, 15, "common", null);
+			Page<ResponseCourseDto> dtoList = courseService.getCourses(pageNo, 15, courseName, "common", null);
+			model.addAttribute("searchName", courseName);
 			model.addAttribute("list", dtoList);
 		}catch(IllegalArgumentException e) {
 			return "error/error_400";
@@ -58,7 +59,7 @@ public class CourseViewController {
 	 * 강의 관리
 	 */
 	@GetMapping("/course/manage")
-	public String manageCourse(@RequestParam(name = "page", defaultValue = "0", required=false) int pageNo, HttpServletRequest request, Model model) {
+	public String manageCourse(@RequestParam(name = "page", defaultValue = "0", required=false) int pageNo, @RequestParam(name="courseName", required=false) String courseName, HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
 		String userEmail = (String)session.getAttribute("loginEmail");
 		
@@ -66,7 +67,8 @@ public class CourseViewController {
 			return "error/error_403";
 		}
 		
-		Page<ResponseCourseDto> dtoList = courseService.getCourses(pageNo, 10, "manage", userEmail);
+		Page<ResponseCourseDto> dtoList = courseService.getCourses(pageNo, 10, courseName, "manage", userEmail);
+		model.addAttribute("searchName", courseName);
 		model.addAttribute("list", dtoList);
 		return "manage/course/course_manage";
 	}

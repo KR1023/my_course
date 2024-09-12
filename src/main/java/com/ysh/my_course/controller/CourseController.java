@@ -52,11 +52,11 @@ public class CourseController {
 	}
 	
 	@GetMapping("/course")
-	public ResponseEntity<Page<ResponseCourseDto>> getCourses(@RequestParam(required= false, defaultValue="0", value="page") int pageNo, HttpServletRequest request) throws IllegalArgumentException{
+	public ResponseEntity<Page<ResponseCourseDto>> getCourses(@RequestParam(required= false, defaultValue="0", value="page") int pageNo, @RequestParam(name="courseName", required=false) String courseName, HttpServletRequest request) throws IllegalArgumentException{
 		
-		log.info("Called getCourses");
+		log.info(String.format("Called getCourses : [page : %d, courseName : %s]", pageNo, courseName));
 		
-		Page<ResponseCourseDto> list = courseService.getCourses(pageNo, 15, "common", null);
+		Page<ResponseCourseDto> list = courseService.getCourses(pageNo, 15, courseName, "common", null);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(list);
 	}
@@ -152,12 +152,12 @@ public class CourseController {
 	 * 
 	 */
 	@GetMapping("/course/manage/{user}")
-	public ResponseEntity<Page<ResponseCourseDto>> getCoursesManage(@RequestParam (name = "page", defaultValue = "0", required = false) int pageNo, @PathVariable(name="user") String userEmail, HttpServletRequest request) {
-		log.info(String.format("Called getCoursesManage : [pageNo : %d, userEmail : %s]", pageNo, userEmail));
+	public ResponseEntity<Page<ResponseCourseDto>> getCoursesManage(@RequestParam (name = "page", defaultValue = "0", required = false) int pageNo, @RequestParam(name="courseName", required=false) String courseName, @PathVariable(name="user") String userEmail, HttpServletRequest request) {
+		log.info(String.format("Called getCoursesManage : [pageNo : %d, courseName : %s, userEmail : %s]", pageNo, courseName, userEmail));
 		HttpSession session = request.getSession();
 //		String userEmail = (String)session.getAttribute("loginEmail");
 		
-		Page<ResponseCourseDto> list = courseService.getCourses(pageNo, 10, "manage", userEmail);
+		Page<ResponseCourseDto> list = courseService.getCourses(pageNo, 10, courseName, "manage", userEmail);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(list);
 	}

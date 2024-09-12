@@ -41,11 +41,15 @@
 					<table>
 						<tr>
 							<td class="col_1">강사</td>
-							<td class="col_2">${course.userEmail}</td>
+							<td class="col_2">${course.instName}</td>
 						</tr>
 						<tr>
 							<td class="col_1">총 인원</td>
 							<td class="col_2">${course.maxAttendee}</td>
+						</tr>
+						<tr>
+							<td class="col_1">신청자</td>
+							<td class="col_2">${course.applicant }</td>
 						</tr>
 						<tr>
 							<td class="col_1">등록일</td>
@@ -56,6 +60,7 @@
 							<td class="col_2"><fmt:formatDate pattern="yyyy년 MM월 dd일" value="${parsedCloseDatetime }" /></td>
 						</tr>
 					</table>
+					
 					<div class="apply">
 						<button id="enroll_btn" type="button" onClick="enroll()">수강 신청</button>
 					</div>

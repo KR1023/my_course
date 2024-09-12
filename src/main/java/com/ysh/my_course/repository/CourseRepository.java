@@ -9,7 +9,8 @@ import com.ysh.my_course.domain.Course;
 
 public interface CourseRepository extends JpaRepository<Course, Long>{
 
-	List<Course> findByUserEmail(String userEmail);
-
 	List<Course> findByUserEmail(String userEmail, Sort by);
+	List<Course> findByUserEmailAndCourseNameContaining(String userEmail, String courseName, Sort by);
+	
+	List<Course> findByCourseNameContaining(String courseName, Sort by);
 }
