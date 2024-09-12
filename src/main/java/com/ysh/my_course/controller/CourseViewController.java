@@ -68,6 +68,22 @@ public class CourseViewController {
 		
 		Page<ResponseCourseDto> dtoList = courseService.getCourses(pageNo, 10, "manage", userEmail);
 		model.addAttribute("list", dtoList);
-		return "/manage/course/course_manage";
+		return "manage/course/course_manage";
+	}
+	
+	@GetMapping("/course/update/{courseId}")
+	public String updateCourse(@PathVariable(name="courseId") Long courseId, HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		String userEmail = (String)session.getAttribute("loginEmail");
+		
+		if(userEmail == null) {
+			return "error/error_403";
+		}
+		
+		ResponseCourseDto course = courseService.getCourse(courseId);
+		
+		model.addAttribute("course", course);
+		
+		return "manage/course/course_update";
 	}
 }

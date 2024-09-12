@@ -20,10 +20,11 @@ public class ResponseCourseDto {
 	private LocalDateTime createdDt;
 	private LocalDate closeDt;
 	private String userEmail;
+	private Long fileId;
 	private String refFilepath;
 	
 	@Builder
-	public ResponseCourseDto(Long id, String courseName, int maxAttendee, String content, LocalDateTime createdDt, LocalDate closeDt, String userEmail, String refFilepath) {
+	public ResponseCourseDto(Long id, String courseName, int maxAttendee, String content, LocalDateTime createdDt, LocalDate closeDt, String userEmail, Long fileId, String refFilepath) {
 		this.id = id;
 		this.courseName = courseName;
 		this.maxAttendee = maxAttendee;
@@ -31,6 +32,7 @@ public class ResponseCourseDto {
 		this.createdDt = createdDt;
 		this.closeDt = closeDt;
 		this.userEmail = userEmail;
+		this.fileId = fileId;
 		this.refFilepath = refFilepath;
 	}
 }

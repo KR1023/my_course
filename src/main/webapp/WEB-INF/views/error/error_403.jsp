@@ -32,14 +32,14 @@ body{
 <div class="container">
 	<div class="message">
 		<span>접근 권한이 없습니다.</span><br />
-		<a href="/test" id="history_back">돌아 가기</a>
+		<a href="/test" id="history_back">메인 페이지</a>
 	</div>
 </div>
 </body>
 <script type="text/javascript">
 	$("#history_back").click((e) => {
 		e.preventDefault();
-		history.back();	
+		location.href = '/course';	
 	});
 </script>
 </html>

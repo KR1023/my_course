@@ -37,10 +37,10 @@ public class FileService {
 		for(MultipartFile file : files) {
 			String dateString = util.getDateString();
 			
-			String refFilepath = String.format("%s/%s%s", rootDir, dateString, file.getOriginalFilename());
+			String refFilepath = String.format("%s/%s_%s", rootDir, dateString, file.getOriginalFilename());
 			 
 					
-			Path filePath = Paths.get(uploadDir, dateString + file.getOriginalFilename());
+			Path filePath = Paths.get(uploadDir, dateString + "_" + file.getOriginalFilename());
 			
 			try {
 				Files.copy(file.getInputStream(), filePath);

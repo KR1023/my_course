@@ -62,17 +62,24 @@ public class CourseController {
 	}
 	
 	@PutMapping("/course/{courseId}")
-	public ResponseEntity<ResponseCourseDto> updateCourse(HttpServletRequest request, @PathVariable(name = "courseId") Long courseId, @RequestBody UpdateCourseDto dto){
+	public ResponseEntity<String> updateCourse(HttpServletRequest request, @PathVariable(name = "courseId") Long courseId, @RequestBody UpdateCourseDto dto){
 		HttpSession session = request.getSession();
-		log.info("updateCourse");
-		ResponseCourseDto responseDto = courseService.updateCourse(courseId, dto);
-		return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+		log.info(String.format("Called updateCourse : [ courseId : %d, DTO : %s]", courseId, dto.toString()));
+		
+//		ResponseCourseDto responseDto = courseService.updateCourse(courseId, dto);
+		String result = courseService.updateCourse(courseId, dto);
+		if(result.equals("success")) {
+			return ResponseEntity.status(HttpStatus.OK).body("updateSucceeded");
+		}else {
+			return ResponseEntity.status(HttpStatus.OK).body("error");
+		}
+		
 	}
 	
 	@DeleteMapping("/course/{courseId}")
 	public ResponseEntity<String> deleteCourse(HttpServletRequest request, @PathVariable(name = "courseId") Long courseId){
 		HttpSession session = request.getSession();
-		log.info(String.format("deleteCourse: [CourseId] : %d", courseId));
+		log.info(String.format("deleteCourse: [CourseId : %d]", courseId));
 		courseService.deleteCourse(courseId);
 		
 		return ResponseEntity.status(HttpStatus.OK).body("deleteSuccess");

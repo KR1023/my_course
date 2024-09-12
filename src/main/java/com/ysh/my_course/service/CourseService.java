@@ -1,5 +1,6 @@
 package com.ysh.my_course.service;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +80,7 @@ public class CourseService {
 				.createdDt(course.getCreatedDt())
 				.closeDt(course.getClosingDt())
 				.userEmail(course.getUser().getEmail())
+				.fileId(course.getFile().getId())
 				.refFilepath(course.getFile().getRefFilepath())
 				.build();
 		
@@ -172,29 +174,63 @@ public class CourseService {
 	}
 	
 	@Transactional
-	public ResponseCourseDto updateCourse(Long courseId, UpdateCourseDto dto) {
-		Course course = courseRepository.findById(courseId)
-				.orElseThrow(() -> new IllegalArgumentException(String.format("Course is not found. [courseId : %s]", courseId)));
-		UploadedFile file = fileRepository.findById(dto.getFileId())
-				.orElseThrow(() -> new IllegalArgumentException(String.format("File is not found. [fileId : %s]", dto.getFileId())));
+	public String updateCourse(Long courseId, UpdateCourseDto dto) {
+		log.info(String.format("Called updateCourse : [courseId : %d, DTO : %s]", courseId, dto.toString()));
 		
-		course.update(dto.getCourseName(), Integer.parseInt(dto.getMaxAttendee()), dto.getContent(), dto.getClosingDt(), file);
+		try {
+			Course course = courseRepository.findById(courseId)
+					.orElseThrow(() -> new IllegalArgumentException(String.format("Course is not found. [courseId : %s]", courseId)));
+			UploadedFile file = null;
+			
+			if(dto.getFileId() != null) {
+				file = fileRepository.findById(dto.getFileId())
+						.orElseThrow(() -> new IllegalArgumentException(String.format("File is not found. [fileId : %s]", dto.getFileId())));
+			}
+			
+			course.update(dto.getContent(), file);
+			courseRepository.save(course);
+			
+			return  "success";
+		}catch(Exception e) {
+			return "error";
+		}
 		
-		courseRepository.save(course);
-		
+		/*
 		ResponseCourseDto response = ResponseCourseDto.builder()
-											.id(course.getId())
-											.courseName(course.getCourseName())
-											.maxAttendee(course.getMaxAttendee())
-											.content(course.getContent())
-											.createdDt(course.getCreatedDt())
-											.userEmail(course.getUser().getEmail())
-											.build();
-		return  response;
-		
+				.id(course.getId())
+				.courseName(course.getCourseName())
+				.maxAttendee(course.getMaxAttendee())
+				.content(course.getContent())
+				.createdDt(course.getCreatedDt())
+				.closeDt(course.getClosingDt())
+				.userEmail(course.getUser().getEmail())
+				.fileId(course.getFile().getId())
+				.refFilepath(course.getFile().getRefFilepath())
+				.build();
+				*/
 	}
 	
+	@Transactional
 	public void deleteCourse(Long courseId) {
+		enrollRepository.deleteByCourseId(courseId);
+		
+		Course course = courseRepository.findById(courseId)
+				.orElseThrow(() -> new IllegalArgumentException(String.format("Course is not found. [courseId : %d]", courseId)));
+		
+		if(course.getFile() != null) {
+			UploadedFile file = course.getFile();
+			
+			try {
+				File savedFile = new File(file.getRealPath());
+				if(savedFile.exists())
+					savedFile.delete();
+				
+			}catch(Exception e) {
+				log.error(e.getMessage());
+			}
+			
+		}
+		
 		courseRepository.deleteById(courseId);
 	}
 	

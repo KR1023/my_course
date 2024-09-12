@@ -36,7 +36,7 @@
 						<td>수정/삭제</td>
 					</tr>
 					<c:forEach var="course" items="${ list.content}">
-						<tr>
+						<tr onClick="viewCourse(${course.id})">
 							<td>${course.id }</td>
 							<td class="course_name">${course.courseName }</td>
 							<td>${course.maxAttendee}</td>
@@ -46,7 +46,10 @@
 							<fmt:parseDate value="${course.closeDt }" pattern="yyyy-MM-dd" var="parsedClosing" type="both" />
 							<td><fmt:formatDate pattern="yy-MM-dd" value="${parsedCreated }"/></td>
 							<td><fmt:formatDate pattern="yy-MM-dd" value="${parsedClosing }"/></td>
-							<td><button class="update_btn">수정</button><button class="delete_btn">삭제</button></td>
+							<td>
+								<button class="update_btn" onClick="moveToUpdatePage(${course.id})">수정</button>
+								<button class="delete_btn" onClick="deleteCourse(${course.id})">삭제</button>
+							</td>
 						</tr>
 					</c:forEach>
 				</table>
@@ -90,5 +93,41 @@
 let moveAddCoursePage = () => {
 	location.href = "/course/add";
 }
+
+let viewCourse = (courseId, e) => {
+	location.href = "/course/" + courseId;
+};
+
+let moveToUpdatePage = (courseId) => {
+	var e = window.event;
+	e.cancelBubble = true;
+	
+	location.href = "/course/update/" + courseId;
+};
+
+let deleteCourse = (courseId) => {
+	var e = window.event;
+	e.cancelBubble = true;
+	
+	if(confirm("강의를 삭제하시겠습니까?")){
+		$.ajax({
+			url: "/api/course/" + courseId,
+			type: "DELETE",
+			async: false,
+			success: (data, textStatus, jqXHR) => {
+				if(jqXHR.status === 200){
+					alert("삭제되었습니다.");
+					location.reload(true);
+				}
+			},
+			error: (data, error) => {
+				console.error(data);
+				console.error(error);
+			}
+		})
+	}
+}
+
+
 </script>
 </html>

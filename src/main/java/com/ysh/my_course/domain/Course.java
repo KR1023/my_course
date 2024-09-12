@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -49,7 +50,7 @@ public class Course {
 	@JoinColumn(name = "user_email")
 	private User user;
 
-	@OneToOne
+	@OneToOne(orphanRemoval = true)
 	@JoinColumn(name = "file_id")
 	private UploadedFile file;
 	
@@ -63,11 +64,18 @@ public class Course {
 		this.file = file;
 	}
 	
+	/*
 	public void update(String courseName, int maxAttendee, String content, LocalDate closingDt, UploadedFile file) {
 		this.courseName = courseName;
 		this.maxAttendee = maxAttendee;
 		this.content = content;
 		this.closingDt = closingDt;
+		this.file = file;
+	}
+	*/
+	
+	public void update(String content, UploadedFile file) {
+		this.content = content;
 		this.file = file;
 	}
 

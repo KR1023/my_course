@@ -94,6 +94,10 @@
 	outline: none;
 }
 
+.add_course .wrapper .input_container .course_info input[disabled]{
+	background: #FFF;
+}
+
 .add_course .wrapper .input_container .course_info .title{
 	display: flex;
 	align-items: center;
