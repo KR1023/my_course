@@ -53,37 +53,52 @@
 						</tr>
 					</c:forEach>
 				</table>
+				<c:if test="${list.totalElements == 0 }">
+					<div class="no_contents">
+						<p>등록된 강의가 없습니다.</p>
+					</div>
+				</c:if>
 			</div>
+			
 			<div class="paging">
-                    <a href="/course/manage?page=0" id="first_page"><img src="/images/arrow/double_arrow_left.svg"></a>
-                    <c:if test="${list.first == false }">
-                    	<a href="/course/manage?page=${list.number - 1}" id="prev_page"><img src="/images/arrow/arrow_back.svg"></a>
-                    </c:if>
-                    <fmt:parseNumber var="section" value="${list.number / 10 }" integerOnly="true" />
-                    <fmt:parseNumber var="pageCheck" value="${list.totalPages / 10 }" integerOnly="true" />
-                    
-                	<c:set var="start" value="${section * 10}"/>
-                	<c:set var="end" value="${(section * 10) + 9}" />
-                	<c:set var="lastPage" value="${list.totalPages - 1}" />
-                	
-					<c:if test="${section ==  pageCheck}">
-						<c:set var="end" value="${list.totalPages - 1}" />
-					</c:if>	
+				<c:choose>
+					<c:when test="${list.totalElements == 0}">
+						<a href="/course/manage?page=0" id="first_page"><img src="/images/arrow/double_arrow_left.svg"></a>
+						1
+						<a href="/course/manage?page=${lastPage}" id="last_page"><img src="/images/arrow/double_arrow_right.svg"></a>
+					</c:when>
+					<c:otherwise>
+						<a href="/course/manage?page=0" id="first_page"><img src="/images/arrow/double_arrow_left.svg"></a>
+                    	<c:if test="${list.first == false }">
+                    		<a href="/course/manage?page=${list.number - 1}" id="prev_page"><img src="/images/arrow/arrow_back.svg"></a>
+                    	</c:if>
+	                    <fmt:parseNumber var="section" value="${list.number / 10 }" integerOnly="true" />
+	                    <fmt:parseNumber var="pageCheck" value="${list.totalPages / 10 }" integerOnly="true" />
+	                    
+	                	<c:set var="start" value="${section * 10}"/>
+	                	<c:set var="end" value="${(section * 10) + 9}" />
+	                	<c:set var="lastPage" value="${list.totalPages - 1}" />
+	                	
+						<c:if test="${section ==  pageCheck}">
+							<c:set var="end" value="${list.totalPages - 1}" />
+						</c:if>	
 
-                    <c:forEach var="i" begin="${start}" end="${end}" step="1">
-                    		<c:choose>
-                    			<c:when test="${(i ) == list.number}">
-                    				<a href="/course/manage?page=${i }" class="current_page">${i + 1}</a>
-                    			</c:when>
-                    			<c:otherwise>
-                    				<a href="/course/manage?page=${i }">${i + 1}</a>
-                    			</c:otherwise>
-                    		</c:choose>
-                	</c:forEach>
-                	<c:if test="${ list.last == false}">
-                		<a href="/course/manage?page=${list.number + 1}" id="next_page"><img src="/images/arrow/arrow_forward.svg"></a>
-                	</c:if>
-                    <a href="/course/manage?page=${lastPage}" id="last_page"><img src="/images/arrow/double_arrow_right.svg"></a>
+	                    <c:forEach var="i" begin="${start}" end="${end}" step="1">
+	                    		<c:choose>
+	                    			<c:when test="${(i ) == list.number}">
+	                    				<a href="/course/manage?page=${i }" class="current_page">${i + 1}</a>
+	                    			</c:when>
+	                    			<c:otherwise>
+	                    				<a href="/course/manage?page=${i }">${i + 1}</a>
+	                    			</c:otherwise>
+	                    		</c:choose>
+	                	</c:forEach>
+	                	<c:if test="${ list.last == false}">
+	                		<a href="/course/manage?page=${list.number + 1}" id="next_page"><img src="/images/arrow/arrow_forward.svg"></a>
+	                	</c:if>
+	                	    <a href="/course/manage?page=${lastPage}" id="last_page"><img src="/images/arrow/double_arrow_right.svg"></a>
+						</c:otherwise>
+					</c:choose>
                 </div>
 		</div>
 	</div>

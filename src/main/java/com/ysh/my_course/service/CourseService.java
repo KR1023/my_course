@@ -51,7 +51,6 @@ public class CourseService {
 					.orElseThrow(() -> new IllegalArgumentException(String.format("File not found : [%d]", dto.getFileId())));
 		}
 		
-		
 		Course course = Course.builder()
 				.courseName(dto.getCourseName())
 				.content(dto.getContent())
@@ -81,6 +80,7 @@ public class CourseService {
 				.closeDt(course.getClosingDt())
 				.userEmail(course.getUser().getEmail())
 				.fileId(course.getFile().getId())
+				.filename(course.getFile().getFilename())
 				.refFilepath(course.getFile().getRefFilepath())
 				.build();
 		

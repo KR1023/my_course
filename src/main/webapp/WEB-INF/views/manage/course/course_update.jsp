@@ -64,7 +64,6 @@
 		</div>
 	</div>
 </div>
-	
 </body>
 
 <script type="text/javascript">
@@ -74,11 +73,10 @@ $(window).on('load', () => {
 	$("#sel_max").val("${course.maxAttendee}");
 	const dtoFileId = '${course.fileId}';
 	
-	console.log(dtoFileId);
-	
 	if(dtoFileId !== ''){
 		fileId = parseInt('${course.fileId}');
 		$("#uploaded_image").attr("src", "${course.refFilepath}");
+		$("#uploaded_filename").text("${course.filename}");
 	}
 	
 	quill.root.innerHTML = '${course.content}';

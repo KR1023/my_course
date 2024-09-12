@@ -82,6 +82,10 @@ public class CourseViewController {
 		
 		ResponseCourseDto course = courseService.getCourse(courseId);
 		
+		if(!course.getUserEmail().equals(userEmail)) {
+			return "error/error_403";
+		}
+		
 		model.addAttribute("course", course);
 		
 		return "manage/course/course_update";
