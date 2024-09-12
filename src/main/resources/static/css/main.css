@@ -156,6 +156,13 @@
     height: 16px;
 }
 
+#first_page{
+	line-height: 15px;
+}
+
+#last_page{
+	line-height: 15px;
+}
 
 footer{
     width: 100%;

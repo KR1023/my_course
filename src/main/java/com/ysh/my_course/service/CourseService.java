@@ -1,6 +1,7 @@
 package com.ysh.my_course.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,61 +71,103 @@ public class CourseService {
 			course.setFile(new UploadedFile());
 		}
 		
-		
 		ResponseCourseDto responseDto = ResponseCourseDto.builder()
-											.id(course.getId())
-											.courseName(course.getCourseName())
-											.maxAttendee(course.getMaxAttendee())
-											.content(course.getContent())
-											.createdDt(course.getCreatedDt())
-											.closeDt(course.getClosingDt())
-											.userEmail(course.getUser().getEmail())
-											.refFilepath(course.getFile().getRefFilepath())
-											.build();
+				.id(course.getId())
+				.courseName(course.getCourseName())
+				.maxAttendee(course.getMaxAttendee())
+				.content(course.getContent())
+				.createdDt(course.getCreatedDt())
+				.closeDt(course.getClosingDt())
+				.userEmail(course.getUser().getEmail())
+				.refFilepath(course.getFile().getRefFilepath())
+				.build();
+		
 		return responseDto;
 	}
 	
-	public Page<ResponseCourseDto> getCourses(int pageNo) throws IllegalArgumentException{
-	 	List<Course> courseList = courseRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+	public Page<ResponseCourseDto> getCourses(int pageNo, int pageSize, String auth, String userEmail) throws IllegalArgumentException{
+		List<Course> courseList = null;
 		
-		List<ResponseCourseDto> dtoList = courseList.stream()
-				.map(e -> {
-					if(e.getFile() != null) {
-						return 
-								ResponseCourseDto
-								.builder()
-								.id(e.getId())
-								.courseName(e.getCourseName())
-								.maxAttendee(e.getMaxAttendee())
-								.content(e.getContent())
-								.createdDt(e.getCreatedDt())
-								.closeDt(e.getClosingDt())
-								.userEmail(e.getUser().getEmail())
-								.refFilepath(e.getFile().getRefFilepath())
-								.build();
-					}else {
-						return ResponseCourseDto
-								.builder()
-								.id(e.getId())
-								.courseName(e.getCourseName())
-								.maxAttendee(e.getMaxAttendee())
-								.content(e.getContent())
-								.createdDt(e.getCreatedDt())
-								.closeDt(e.getClosingDt())
-								.userEmail(e.getUser().getEmail())
-								.refFilepath(null)
-								.build();
-					}
-				})
-				.collect(Collectors.toList());
+	 	List<ResponseCourseDto> dtoList = new ArrayList<>();
+	 	
+	 	if(auth.equals("manage")) {
+	 		courseList = courseRepository.findByUserEmail(userEmail, Sort.by(Sort.Direction.DESC, "id"));
+	 		
+	 		dtoList = courseList.stream()
+					.map(e -> {
+						if(e.getFile() != null) {
+							return 
+									ResponseCourseDto
+									.builder()
+									.id(e.getId())
+									.courseName(e.getCourseName())
+									.maxAttendee(e.getMaxAttendee())
+									.content(e.getContent())
+									.createdDt(e.getCreatedDt())
+									.closeDt(e.getClosingDt())
+									.userEmail(e.getUser().getEmail())
+									.refFilepath(e.getFile().getRefFilepath())
+									.build();
+						}else {
+							return ResponseCourseDto
+									.builder()
+									.id(e.getId())
+									.courseName(e.getCourseName())
+									.maxAttendee(e.getMaxAttendee())
+									.content(e.getContent())
+									.createdDt(e.getCreatedDt())
+									.closeDt(e.getClosingDt())
+									.userEmail(e.getUser().getEmail())
+									.refFilepath(null)
+									.build();
+						}
+					})
+					.collect(Collectors.toList());
+	 		
+	 	}else {
+	 		courseList = courseRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+	 		
+	 		dtoList = courseList.stream()
+					.map(e -> {
+						if(e.getFile() != null) {
+							return 
+									ResponseCourseDto
+									.builder()
+									.id(e.getId())
+									.courseName(e.getCourseName())
+									.maxAttendee(e.getMaxAttendee())
+									.content(e.getContent())
+									.createdDt(e.getCreatedDt())
+									.closeDt(e.getClosingDt())
+									.userEmail(e.getUser().getEmail())
+									.refFilepath(e.getFile().getRefFilepath())
+									.build();
+						}else {
+							return ResponseCourseDto
+									.builder()
+									.id(e.getId())
+									.courseName(e.getCourseName())
+									.maxAttendee(e.getMaxAttendee())
+									.content(e.getContent())
+									.createdDt(e.getCreatedDt())
+									.closeDt(e.getClosingDt())
+									.userEmail(e.getUser().getEmail())
+									.refFilepath(null)
+									.build();
+						}
+					})
+					.collect(Collectors.toList());
+	 	}
 		
-		PageRequest pageRequest= PageRequest.of(pageNo, 15);
+		
+		PageRequest pageRequest= PageRequest.of(pageNo, pageSize);
 		
 		int start = (int) pageRequest.getOffset();
 		int end = Math.min((start + pageRequest.getPageSize()), dtoList.size());
 		
 		Page<ResponseCourseDto> responseList = new PageImpl<ResponseCourseDto>(dtoList.subList(start, end), pageRequest, dtoList.size());
 		
+		log.info(responseList.toString());
 		return responseList;
 	}
 	

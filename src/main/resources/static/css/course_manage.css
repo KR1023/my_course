@@ -9,6 +9,7 @@
 }
 
 .course_manage{
+	font-family: 'NanumSquareNeo';
     left: 0;
     top: 0;
     width: 100%;
@@ -28,3 +29,146 @@
     box-sizing: border-box;
 }
 
+.course_manage .wrapper .manage_container{
+	padding: 20px;
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.course_manage .wrapper .manage_container .management{
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	padding-right: 30px;
+}
+
+.course_manage .wrapper .manage_container .management button{
+	width: 80px;
+	height: 40px;
+	background: #0069FF;
+	border: 1px solid #C8C8C8;
+	border-radius: 7px;
+	font-size: 20px;
+	color: #FFF;
+}
+
+.course_manage .wrapper .manage_container .management button:hover{
+	cursor: pointer;
+	color: #0069FF;
+	background: #FFF;
+	border: 1px solid #000;
+}
+
+.course_manage .wrapper .manage_container .list{
+	margin-top: 50px;
+	width: 95%;
+	height: 495px;
+	border: 0px solid #C8C8C8;
+}
+
+.course_manage .wrapper .manage_container .list table{
+	width: 100%;
+	border: 0;
+	border-collapse: collapse;
+}
+
+.course_manage .wrapper .manage_container .list table input[type="checkbox"]{
+	width: 18px;
+	height: 18px;
+}
+
+.course_manage .wrapper .manage_container .list table tr{
+	border: 0;	
+}
+
+.course_manage .wrapper .manage_container .list table tr:first-child{
+	background: #d0d3d4;
+}
+
+.course_manage .wrapper .manage_container .list table tr:first-child:hover{
+	background: #d0d3d4;
+}
+
+.course_manage .wrapper .manage_container .list table tr:not(first-child):hover{
+	background: #f3f5f9;
+}
+
+.course_manage .wrapper .manage_container .list table tr td {
+	border: 0;
+	text-align: center;
+	height: 43px;
+}
+
+.course_manage .wrapper .manage_container .list table tr td.course_name{
+	width: 370px;
+	display: block;
+	line-height: 43px;
+	text-align: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.course_manage .wrapper .manage_container .list table tr td button{
+	background: none;
+	width: 55px;
+	height: 30px;
+	border: 0px solid #C8C8C8;
+	border-radius: 7px;
+	
+}
+
+.course_manage .wrapper .manage_container .list table tr td button:hover{
+	cursor: pointer;
+	background: #c8c8c8;
+	color: #fff;
+	font-weight: 800;
+}
+
+.course_manage .wrapper .manage_container .list table tr td .update_btn{
+	background: #4cff3a;
+}
+
+.course_manage .wrapper .manage_container .list table tr td .delete_btn{
+	background: #ff4949;
+	margin-left: 8px;
+}
+
+.course_manage .wrapper .manage_container .paging{
+	width: 100%;
+    height: 45px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+ .course_manage .wrapper .manage_container .paging a{
+    text-decoration: none;
+    margin: 10px;
+    color: #000;
+ }
+ 
+ .course_manage .wrapper .manage_container .paging .current_page{
+ 	color: red;
+ }
+ 
+#prev_page img{
+    width: 16px;
+    height: 16px;
+}
+
+#next_page img{
+    width: 16px;
+    height: 16px;
+}
+
+#first_page{
+	line-height: 15px;
+}
+
+#last_page{
+	line-height: 15px;
+}

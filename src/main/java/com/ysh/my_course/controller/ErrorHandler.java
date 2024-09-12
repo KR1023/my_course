@@ -20,6 +20,8 @@ public class ErrorHandler implements ErrorController{
 			switch(statusCode) {
 			case 400:
 				return "error/error_400";
+			case 403:
+				return "error/error_403";
 			case 404:
 				return "error/error_404";
 			default:

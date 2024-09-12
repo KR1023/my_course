@@ -56,7 +56,7 @@ public class CourseController {
 		
 		log.info("Called getCourses");
 		
-		Page<ResponseCourseDto> list = courseService.getCourses(pageNo);
+		Page<ResponseCourseDto> list = courseService.getCourses(pageNo, 15, "common", null);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(list);
 	}
@@ -139,4 +139,20 @@ public class CourseController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 		}
 	}
+	
+	/**
+	 * 강의 관리
+	 * 
+	 */
+	@GetMapping("/course/manage/{user}")
+	public ResponseEntity<Page<ResponseCourseDto>> getCoursesManage(@RequestParam (name = "page", defaultValue = "0", required = false) int pageNo, @PathVariable(name="user") String userEmail, HttpServletRequest request) {
+		log.info(String.format("Called getCoursesManage : [pageNo : %d, userEmail : %s]", pageNo, userEmail));
+		HttpSession session = request.getSession();
+//		String userEmail = (String)session.getAttribute("loginEmail");
+		
+		Page<ResponseCourseDto> list = courseService.getCourses(pageNo, 10, "manage", userEmail);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(list);
+	}
 }
+

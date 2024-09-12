@@ -27,7 +27,7 @@ public class CourseViewController {
 		HttpSession session = request.getSession();
 		log.info("Called courseList View");
 		try {
-			Page<ResponseCourseDto> dtoList = courseService.getCourses(pageNo);
+			Page<ResponseCourseDto> dtoList = courseService.getCourses(pageNo, 15, "common", null);
 			model.addAttribute("list", dtoList);
 		}catch(IllegalArgumentException e) {
 			return "error/error_400";
@@ -58,7 +58,16 @@ public class CourseViewController {
 	 * 강의 관리
 	 */
 	@GetMapping("/course/manage")
-	public String manageCourse(HttpServletRequest request, Model model) {
+	public String manageCourse(@RequestParam(name = "page", defaultValue = "0", required=false) int pageNo, HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		String userEmail = (String)session.getAttribute("loginEmail");
+		
+		if(userEmail == null) {
+			return "error/error_403";
+		}
+		
+		Page<ResponseCourseDto> dtoList = courseService.getCourses(pageNo, 10, "manage", userEmail);
+		model.addAttribute("list", dtoList);
 		return "/manage/course/course_manage";
 	}
 }
