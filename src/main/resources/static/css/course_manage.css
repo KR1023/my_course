@@ -127,6 +127,10 @@
 	font-weight: 800;
 }
 
+.course_manage .wrapper .manage_container .list table tr td.applicant:hover{
+	cursor: pointer;
+}
+
 .course_manage .wrapper .manage_container .list table tr td .update_btn{
 	background: #4cff3a;
 }
@@ -141,6 +145,7 @@
 	display: flex;
 	justify-content: center;
 }
+
 
 .course_manage .wrapper .manage_container .paging{
 	width: 100%;
@@ -177,4 +182,67 @@
 
 #last_page{
 	line-height: 15px;
+}
+
+.course_manage .applicant_background{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: 10;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	background: rgba(247, 247, 247, .3);
+	opacity: 0;
+}
+
+.course_manage .applicant_background .applicant_container{
+	width: 350px;
+	height: 500px;
+	background: #fff;
+	box-sizing: border-box;
+	border: 1px solid #C8C8C8;
+	border-radius: 8px;
+}
+
+.course_manage .applicant_background .applicant_container header{
+	width: 100%;
+	height: 30px;
+	border-bottom: 1px solid #C8C8C8;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+.course_manage .applicant_background .applicant_container header img{
+	margin-right: 3px;
+}
+
+.course_manage .applicant_background .applicant_container header img:hover{
+	cursor: pointer;
+}
+
+.course_manage .applicant_background .applicant_container .user_container{
+	width: 100%;
+}
+
+.course_manage .applicant_background .applicant_container .user_container header{
+	width: 100%;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	height: 35px;
+}
+
+.course_manage .applicant_background .applicant_container .user_container .user_list .row{
+	width: 100%;
+	height: 40px;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;	
+}
+
+.course_manage .applicant_background .applicant_container .user_container .user_list .no_applicant{
+	text-align: center;
+	margin-top: 160px;
 }

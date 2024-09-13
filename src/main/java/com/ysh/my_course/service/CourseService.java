@@ -18,11 +18,11 @@ import com.ysh.my_course.domain.Enrollment;
 import com.ysh.my_course.domain.UploadedFile;
 import com.ysh.my_course.domain.User;
 import com.ysh.my_course.dto.course.AddCourseDto;
-import com.ysh.my_course.dto.course.CourseManageDto;
 import com.ysh.my_course.dto.course.CourseManageDtoInterface;
 import com.ysh.my_course.dto.course.ResponseCourseDto;
 import com.ysh.my_course.dto.course.UpdateCourseDto;
 import com.ysh.my_course.dto.enroll.RequestEnrollDto;
+import com.ysh.my_course.dto.enroll.ResponseApplicantDto;
 import com.ysh.my_course.repository.CourseRepository;
 import com.ysh.my_course.repository.EnrollmentRepository;
 import com.ysh.my_course.repository.UploadedFileRepository;
@@ -273,5 +273,22 @@ public class CourseService {
 		}else {
 			return "userNotFound";
 		}
+	}
+	
+	public List<ResponseApplicantDto> getApplicantList(Long courseId) {
+		List<Enrollment> enrollList = enrollRepository.findByCourseId(courseId);
+		
+		List<ResponseApplicantDto> userList = new ArrayList<>();
+		
+		for(Enrollment e : enrollList) {
+			User user = e.getUser();
+			userList.add(ResponseApplicantDto.builder()
+					.email(user.getEmail())
+					.name(user.getName())
+					.phone(user.getPhone())
+					.build());
+		}
+		
+		return userList;
 	}
 }

@@ -40,7 +40,7 @@
 							<td>${course.id }</td>
 							<td class="course_name">${course.courseName }</td>
 							<td>${course.maxAttendee}</td>
-							<td>${course.applicant }</td>
+							<td class="applicant" onClick="checkApplicant(${course.id})">${course.applicant }</td>
 							<td>${course.userEmail }</td>
 							<fmt:parseDate value="${course.createdDt }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedCreated" type="both" />
 							<fmt:parseDate value="${course.closeDt }" pattern="yyyy-MM-dd" var="parsedClosing" type="both" />
@@ -137,7 +137,23 @@
 					
 						</c:otherwise>
 					</c:choose>
-                </div>
+        	</div>
+		</div>
+	</div>
+	<div id="applicant_modal" class="applicant_background">
+		<div class="applicant_container">
+			<header>
+				<img src="/images/close.svg" alt="close" onClick="closeModal()"/>
+			</header>
+			<div class="user_container">
+				<header>
+					<span>이메일</span>
+					<span>이름</span>
+					<span>휴대폰</span>
+				</header>
+				<div id="user_list" class="user_list">
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -150,6 +166,72 @@ let moveAddCoursePage = () => {
 let viewCourse = (courseId, e) => {
 	location.href = "/course/" + courseId;
 };
+
+let checkApplicant = (courseId) => {
+	var e = window.event;
+	e.cancelBubble = true;
+	$.ajax({
+		url: '/api/course/manage/applicant/' + courseId,
+		type: "GET",
+		contentType: "application/json",
+		async: false,
+		success: (data, textStatus, jqXHR) => {
+			if(jqXHR.status === 200){
+				const userListEl = document.getElementById("user_list");
+				
+				if(data.length > 0){
+					for(let el of data){
+						let emailSpan = document.createElement("span");
+						let nameSpan = document.createElement("span");
+						let phoneSpan = document.createElement("span");	
+						
+						emailSpan.innerText = el.email;
+						nameSpan.innerText = el.name;
+						phoneSpan.innerText = el.phone;
+						
+						let rowElement = document.createElement("div");
+						rowElement.className = "row";
+						
+						rowElement.append(emailSpan);
+						rowElement.append(nameSpan);
+						rowElement.append(phoneSpan);
+						
+						userListEl.append(rowElement);
+					}
+					
+					
+				}else{
+					let pEl = document.createElement("p");
+					pEl.innerText = "신청자가 없습니다.";
+					pEl.className = "no_applicant";
+					
+					userListEl.append(pEl);
+				}
+				
+				
+				$("#applicant_modal")
+					.css("display", "flex")
+					.css("opacity", "1");
+			}
+		},
+		error: (data, error) => {
+			console.error(data);
+			console.error(error);
+		}
+	});
+};
+
+let closeModal = () => {
+	const userListEl = document.getElementById("user_list");
+	
+	while(userListEl.firstChild){
+		userListEl.removeChild(userListEl.firstChild);
+	}
+	
+	$("#applicant_modal")
+		.css("display", "none")
+		.css("opacity", "0");
+}
 
 let moveToUpdatePage = (courseId) => {
 	var e = window.event;
