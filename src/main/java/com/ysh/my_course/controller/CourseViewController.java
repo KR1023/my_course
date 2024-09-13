@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ysh.my_course.dto.course.CourseManageDto;
+import com.ysh.my_course.dto.course.CourseManageDtoInterface;
 import com.ysh.my_course.dto.course.ResponseCourseDto;
 import com.ysh.my_course.service.CourseService;
 
@@ -27,7 +29,7 @@ public class CourseViewController {
 		HttpSession session = request.getSession();
 		log.info("Called courseList View");
 		try {
-			Page<ResponseCourseDto> dtoList = courseService.getCourses(pageNo, 15, courseName, "common", null);
+			Page<CourseManageDtoInterface> dtoList = courseService.getCourses(pageNo, 15, courseName, "common", null);
 			model.addAttribute("searchName", courseName);
 			model.addAttribute("list", dtoList);
 		}catch(IllegalArgumentException e) {
@@ -67,7 +69,7 @@ public class CourseViewController {
 			return "error/error_403";
 		}
 		
-		Page<ResponseCourseDto> dtoList = courseService.getCourses(pageNo, 10, courseName, "manage", userEmail);
+		Page<CourseManageDtoInterface> dtoList = courseService.getCourses(pageNo, 10, courseName, "manage", userEmail);
 		model.addAttribute("searchName", courseName);
 		model.addAttribute("list", dtoList);
 		return "manage/course/course_manage";

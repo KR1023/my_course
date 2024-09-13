@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ysh.my_course.domain.Course;
 import com.ysh.my_course.dto.course.AddCourseDto;
+import com.ysh.my_course.dto.course.CourseManageDto;
+import com.ysh.my_course.dto.course.CourseManageDtoInterface;
 import com.ysh.my_course.dto.course.ResponseCourseDto;
 import com.ysh.my_course.dto.course.UpdateCourseDto;
 import com.ysh.my_course.dto.enroll.RequestEnrollDto;
@@ -52,11 +54,11 @@ public class CourseController {
 	}
 	
 	@GetMapping("/course")
-	public ResponseEntity<Page<ResponseCourseDto>> getCourses(@RequestParam(required= false, defaultValue="0", value="page") int pageNo, @RequestParam(name="courseName", required=false) String courseName, HttpServletRequest request) throws IllegalArgumentException{
+	public ResponseEntity<Page<CourseManageDtoInterface>> getCourses(@RequestParam(required= false, defaultValue="0", value="page") int pageNo, @RequestParam(name="courseName", required=false) String courseName, HttpServletRequest request) throws IllegalArgumentException{
 		
 		log.info(String.format("Called getCourses : [page : %d, courseName : %s]", pageNo, courseName));
 		
-		Page<ResponseCourseDto> list = courseService.getCourses(pageNo, 15, courseName, "common", null);
+		Page<CourseManageDtoInterface> list = courseService.getCourses(pageNo, 15, courseName, "common", null);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(list);
 	}
@@ -152,12 +154,12 @@ public class CourseController {
 	 * 
 	 */
 	@GetMapping("/course/manage/{user}")
-	public ResponseEntity<Page<ResponseCourseDto>> getCoursesManage(@RequestParam (name = "page", defaultValue = "0", required = false) int pageNo, @RequestParam(name="courseName", required=false) String courseName, @PathVariable(name="user") String userEmail, HttpServletRequest request) {
+	public ResponseEntity<Page<CourseManageDtoInterface>> getCoursesManage(@RequestParam (name = "page", defaultValue = "0", required = false) int pageNo, @RequestParam(name="courseName", required=false) String courseName, @PathVariable(name="user") String userEmail, HttpServletRequest request) {
 		log.info(String.format("Called getCoursesManage : [pageNo : %d, courseName : %s, userEmail : %s]", pageNo, courseName, userEmail));
 		HttpSession session = request.getSession();
 //		String userEmail = (String)session.getAttribute("loginEmail");
 		
-		Page<ResponseCourseDto> list = courseService.getCourses(pageNo, 10, courseName, "manage", userEmail);
+		Page<CourseManageDtoInterface> list = courseService.getCourses(pageNo, 10, courseName, "manage", userEmail);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(list);
 	}

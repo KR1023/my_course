@@ -4,7 +4,6 @@ import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,6 +18,8 @@ import com.ysh.my_course.domain.Enrollment;
 import com.ysh.my_course.domain.UploadedFile;
 import com.ysh.my_course.domain.User;
 import com.ysh.my_course.dto.course.AddCourseDto;
+import com.ysh.my_course.dto.course.CourseManageDto;
+import com.ysh.my_course.dto.course.CourseManageDtoInterface;
 import com.ysh.my_course.dto.course.ResponseCourseDto;
 import com.ysh.my_course.dto.course.UpdateCourseDto;
 import com.ysh.my_course.dto.enroll.RequestEnrollDto;
@@ -90,8 +91,8 @@ public class CourseService {
 		return responseDto;
 	}
 	
-	public Page<ResponseCourseDto> getCourses(int pageNo, int pageSize, String courseName, String auth, String userEmail) throws IllegalArgumentException{
-		List<Course> courseList = null;
+	public Page<CourseManageDtoInterface> getCourses(int pageNo, int pageSize, String courseName, String auth, String userEmail) throws IllegalArgumentException{
+		List<CourseManageDtoInterface> courseList = null;
 		
 	 	List<ResponseCourseDto> dtoList = new ArrayList<>();
 	 	
@@ -102,89 +103,22 @@ public class CourseService {
 	 		else
 	 			courseList = courseRepository.findByUserEmail(userEmail, Sort.by(Sort.Direction.DESC, "id"));
 	 		
-	 		dtoList = courseList.stream()
-					.map(e -> {
-						if(e.getFile() != null) {
-							int applicantCnt = Long.valueOf(enrollRepository.countByCourse(e)).intValue();
-							return 
-									ResponseCourseDto
-									.builder()
-									.id(e.getId())
-									.courseName(e.getCourseName())
-									.maxAttendee(e.getMaxAttendee())
-									.applicant(applicantCnt)
-									.content(e.getContent())
-									.createdDt(e.getCreatedDt())
-									.closeDt(e.getClosingDt())
-									.userEmail(e.getUser().getEmail())
-									.instName(e.getUser().getName())
-									.refFilepath(e.getFile().getRefFilepath())
-									.build();
-						}else {
-							int applicantCnt = Long.valueOf(enrollRepository.countByCourse(e)).intValue();
-							return ResponseCourseDto
-									.builder()
-									.id(e.getId())
-									.courseName(e.getCourseName())
-									.maxAttendee(e.getMaxAttendee())
-									.applicant(applicantCnt)
-									.content(e.getContent())
-									.createdDt(e.getCreatedDt())
-									.closeDt(e.getClosingDt())
-									.userEmail(e.getUser().getEmail())
-									.instName(e.getUser().getName())
-									.refFilepath(null)
-									.build();
-						}
-					})
-					.collect(Collectors.toList());
-	 		
 	 	}else {
+	 		
 	 		if(courseName != null) {
 	 			courseList = courseRepository.findByCourseNameContaining(courseName, Sort.by(Sort.Direction.DESC, "id"));
 	 		}else {
-	 			courseList = courseRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+	 			courseList = courseRepository.findAllCourses(Sort.by(Sort.Direction.DESC, "id"));
 	 		}
-	 		
-	 		dtoList = courseList.stream()
-					.map(e -> {
-						if(e.getFile() != null) {
-							return 
-									ResponseCourseDto
-									.builder()
-									.id(e.getId())
-									.courseName(e.getCourseName())
-									.maxAttendee(e.getMaxAttendee())
-									.content(e.getContent())
-									.createdDt(e.getCreatedDt())
-									.closeDt(e.getClosingDt())
-									.userEmail(e.getUser().getEmail())
-									.refFilepath(e.getFile().getRefFilepath())
-									.build();
-						}else {
-							return ResponseCourseDto
-									.builder()
-									.id(e.getId())
-									.courseName(e.getCourseName())
-									.maxAttendee(e.getMaxAttendee())
-									.content(e.getContent())
-									.createdDt(e.getCreatedDt())
-									.closeDt(e.getClosingDt())
-									.userEmail(e.getUser().getEmail())
-									.refFilepath(null)
-									.build();
-						}
-					})
-					.collect(Collectors.toList());
 	 	}
 		
 		
 		PageRequest pageRequest= PageRequest.of(pageNo, pageSize);
 		
 		int start = (int) pageRequest.getOffset();
-		int end = Math.min((start + pageRequest.getPageSize()), dtoList.size());
+		int end = Math.min((start + pageRequest.getPageSize()), courseList.size());
 		
-		Page<ResponseCourseDto> responseList = new PageImpl<ResponseCourseDto>(dtoList.subList(start, end), pageRequest, dtoList.size());
+		Page<CourseManageDtoInterface> responseList = new PageImpl<CourseManageDtoInterface>(courseList.subList(start, end), pageRequest, courseList.size());
 		
 		log.info(responseList.toString());
 		return responseList;

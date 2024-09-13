@@ -30,7 +30,7 @@ let inputName;
 			<c:if test="${userAuth != null and userAuth != 'normal' }">
 				<a href="/course/manage">강의 관리</a>
 			</c:if>
-			<c:if test="${userAith != null and (userAuth == 'manager' or userAuth == 'admin')}">
+			<c:if test="${userAuth != null and (userAuth == 'manager' or userAuth == 'admin')}">
 				<a href="/instructor/manage">강사 관리</a>
 			</c:if>
 		</div>
