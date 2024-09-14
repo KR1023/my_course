@@ -22,6 +22,7 @@ import com.ysh.my_course.dto.course.ResponseCourseDto;
 import com.ysh.my_course.dto.course.UpdateCourseDto;
 import com.ysh.my_course.dto.enroll.RequestEnrollDto;
 import com.ysh.my_course.dto.enroll.ResponseApplicantDto;
+import com.ysh.my_course.dto.enroll.ResponseEnrollDto;
 import com.ysh.my_course.service.CourseService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -92,6 +93,18 @@ public class CourseController {
 	/*
 	 *	수강 확인/신청/취소  
 	 */
+	@GetMapping("/enroll/list")
+	public ResponseEntity<List<ResponseEnrollDto>> getEnrollList(@RequestParam(name="page", defaultValue="0", required=false) int pageNo, HttpServletRequest request){
+		HttpSession session = request.getSession();
+		String userEmail = (String)session.getAttribute("loginEmail");
+		if(userEmail == null) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		}
+		List<ResponseEnrollDto> list = courseService.getEnrollList(pageNo, userEmail);
+		
+		return ResponseEntity.status(HttpStatus.OK).body(list);
+	}
+	
 	@PostMapping("/enroll/check")
 	public ResponseEntity<String> checkEnrollment(@RequestBody RequestEnrollDto dto, HttpServletRequest request){
 		HttpSession session = request.getSession();

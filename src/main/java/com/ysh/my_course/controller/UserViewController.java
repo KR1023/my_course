@@ -1,10 +1,14 @@
 package com.ysh.my_course.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.ysh.my_course.domain.User;
+import com.ysh.my_course.dto.enroll.ResponseEnrollDto;
+import com.ysh.my_course.service.CourseService;
 import com.ysh.my_course.service.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 @Controller
 public class UserViewController {
 	private final UserService userService;
+	private final CourseService courseService;
 	
 	@GetMapping("/login")
 	public String loginPage(HttpServletRequest request) {
@@ -43,7 +48,9 @@ public class UserViewController {
 		}
 		
 		User user = userService.getUserByEmail(userEmail);
+		List<ResponseEnrollDto> enrollList = courseService.getEnrollList(0, userEmail);
 		model.addAttribute("user", user);
+		model.addAttribute("enroll", enrollList);
 		
 		return "user/myPage";
 		

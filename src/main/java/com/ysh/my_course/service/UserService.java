@@ -123,4 +123,6 @@ public class UserService {
 		enrollRepository.deleteByUserEmail(email);
 		userRepository.deleteByEmail(email);
 	}
+	
+
 }

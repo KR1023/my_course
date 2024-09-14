@@ -41,10 +41,10 @@
 		</div>
 		<div class="info_container">
 			<div class="tab_chooser">
-				<div class="tab"><span>내 정보</span></div>
-				<div class="tab"><span>수강 목록</span></div>
+				<div id="tab_user" class="tab activated" onClick="showUserInfo()"><span>내 정보</span></div>
+				<div id="tab_list" class="tab" onClick="showCourseList()"><span>수강 목록</span></div>
 			</div>
-			<div id="contents" class="content_container">
+			<div id="user_info" class="content_container">
 				<header>
 					<p>내 정보</p>
 				</header>
@@ -87,10 +87,75 @@
 					<button id="withdrawal" onClick="userWithdrawal()">탈퇴하기</button>
 				</div>
 			</div>
+			<div id="course_list" class="content_container">
+				<header>
+					<p>수강 목록</p>
+				</header>
+				<div class="course_container">
+					<table>
+						<tr>
+							<td width="50%">강의명</td>
+							<td width="15%">강사명</td>
+							<td width="35%">신청일</td>
+						</tr>
+						<c:forEach var="enrollment" items="${enroll }">
+							<fmt:parseDate value="${enrollment.enrolledDt }" pattern="yyyy-MM-dd'T'HH:mm:ss" var="parsedEnrollDt"/>
+							<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${parsedEnrollDt }" var="enrollDt"/>
+							<tr onClick="moveToCourse(${enrollment.courseId})">
+								<td>${enrollment.courseName}</td>
+								<td>${enrollment.instName}</td>
+								<td>${enrollDt}</td>
+							</tr>
+						</c:forEach>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 <script type="text/javascript">
+const showUserInfo = () => {
+	$("#tab_list").removeClass("activated");
+	$("#course_list").css("display", "none");
+	
+	$("#tab_user").addClass("activated");
+	$("#user_info").css("display", "block")
+};
+
+const showCourseList = () => {
+	$("#tab_user").removeClass('activated');
+	$("#user_info").css("display", "none");
+		
+	$("#tab_list").addClass("activated");	
+	$("#course_list").css("display", "block");
+	
+	/*
+	$.ajax({
+		url: "/api/enroll/list",
+		type: "GET",
+		async: false,
+		contentType: "application/json",
+		success: (data, textStatus, jqXHR) => {
+			if(jqXHR.status === 200){
+				console.log(data);
+				let trEl = document.createElement("tr");
+				let enrollIdEl = document.createElement("td");
+				let courseNameEl = document.createElement("td");
+				let instNameEl = document.createElement("td");
+				let enrolledDtEl = document.createElement("td");
+				
+				
+			}
+		},
+		error: (data) => {
+			console.error(data);
+			alert("내부적인 오류가 발생했습니다. 잠시 후에 다시 시도해 주세요.");
+		}
+	});
+	*/
+	
+};
+
 let form = document.getElementById("user_form");
 
 let checkErrors = {
@@ -193,7 +258,11 @@ const updateUser = () => {
 			alert("이름을 입력해 주세요.");
 			return;
 		}else if(name.length > 0){
-			checkErrors = {...checkErrors, name: false}
+			checkErrors = {...checkErrors, name: false};
+		}
+		
+		if(form.password.value.length === 0){
+			checkErrors = {...checkErrors, password: false};	
 		}
 		
 		if(phone === '' || phone.length === 0){
@@ -251,6 +320,9 @@ const userWithdrawal = () => {
 	}
 };
 
+const moveToCourse = (courseId) => {
+	location.href = "/course/"+courseId;
+}
 </script>
 </body>
 </html>

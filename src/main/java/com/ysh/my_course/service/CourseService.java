@@ -23,6 +23,7 @@ import com.ysh.my_course.dto.course.ResponseCourseDto;
 import com.ysh.my_course.dto.course.UpdateCourseDto;
 import com.ysh.my_course.dto.enroll.RequestEnrollDto;
 import com.ysh.my_course.dto.enroll.ResponseApplicantDto;
+import com.ysh.my_course.dto.enroll.ResponseEnrollDto;
 import com.ysh.my_course.repository.CourseRepository;
 import com.ysh.my_course.repository.EnrollmentRepository;
 import com.ysh.my_course.repository.UploadedFileRepository;
@@ -94,11 +95,8 @@ public class CourseService {
 	public Page<CourseManageDtoInterface> getCourses(int pageNo, int pageSize, String courseName, String auth, String userEmail) throws IllegalArgumentException{
 		List<CourseManageDtoInterface> courseList = null;
 		
-	 	List<ResponseCourseDto> dtoList = new ArrayList<>();
-	 	
 	 	if(auth.equals("manage")) {
 	 		if(courseName != null)
-//	 			courseList = courseRepository.findByCourseNameLike(userEmail, Sort.by(Sort.Direction.DESC, "id"));
 	 			courseList = courseRepository.findByUserEmailAndCourseNameContaining(userEmail, courseName, Sort.by(Sort.Direction.DESC, "id"));
 	 		else
 	 			courseList = courseRepository.findByUserEmail(userEmail, Sort.by(Sort.Direction.DESC, "id"));
@@ -145,20 +143,6 @@ public class CourseService {
 		}catch(Exception e) {
 			return "error";
 		}
-		
-		/*
-		ResponseCourseDto response = ResponseCourseDto.builder()
-				.id(course.getId())
-				.courseName(course.getCourseName())
-				.maxAttendee(course.getMaxAttendee())
-				.content(course.getContent())
-				.createdDt(course.getCreatedDt())
-				.closeDt(course.getClosingDt())
-				.userEmail(course.getUser().getEmail())
-				.fileId(course.getFile().getId())
-				.refFilepath(course.getFile().getRefFilepath())
-				.build();
-				*/
 	}
 	
 	@Transactional
@@ -290,5 +274,21 @@ public class CourseService {
 		}
 		
 		return userList;
+	}
+
+	public List<ResponseEnrollDto> getEnrollList(int pageNo, String userEmail) {
+		
+		List<ResponseEnrollDto> enrollList = enrollRepository.getEnrollListByUserEmail(userEmail);
+		
+		/*
+		PageRequest pageRequest = PageRequest.of(pageNo, 10);
+		
+		int start = (int) pageRequest.getOffset();
+		int end = Math.min((start + pageRequest.getPageSize()), enrollList.size());
+		
+		Page<ResponseEnrollDto> responseList = new PageImpl<ResponseEnrollDto>(enrollList.subList(start, end), pageRequest, enrollList.size());
+		*/
+		
+		return enrollList;
 	}
 }
