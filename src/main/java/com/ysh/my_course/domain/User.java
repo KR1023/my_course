@@ -63,6 +63,10 @@ public class User{
 		this.phone = phone;
 	}
 	
+	public void updateAuth(String auth) {
+		this.auth = auth;
+	}
+	
 	@Builder
 	public User(String email, String password) {
 		this.email = email;

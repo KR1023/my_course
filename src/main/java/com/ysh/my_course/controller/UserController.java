@@ -1,8 +1,8 @@
 package com.ysh.my_course.controller;
 
-import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ysh.my_course.domain.User;
 import com.ysh.my_course.dto.user.AddUserDto;
 import com.ysh.my_course.dto.user.RequestLoginDto;
+import com.ysh.my_course.dto.user.ResponseUserDto;
 import com.ysh.my_course.dto.user.UpdateUserDto;
 import com.ysh.my_course.service.UserService;
 
@@ -88,13 +90,15 @@ public class UserController {
 	
 	@GetMapping("/user/{email}")
 	public ResponseEntity<User> getUser(@PathVariable(name = "email") String email){
+		log.info(String.format("Called getUser : [ email : %s ]", email));
+		
 		User user = userService.getUserByEmail(email);
 		return ResponseEntity.status(HttpStatus.OK).body(user);
 	}
 	
 	@GetMapping("/users")
-	public ResponseEntity<List<User>> getUsers(){
-		List<User> userList = userService.getUsers();
+	public ResponseEntity<Page<ResponseUserDto>> getUsers(@RequestParam(name="page", defaultValue="0", required=false) int pageNo){
+		Page<ResponseUserDto> userList = userService.getUsers(pageNo);
 		return ResponseEntity.status(HttpStatus.OK).body(userList);
 	}
 	
@@ -113,10 +117,39 @@ public class UserController {
 	
 	@DeleteMapping("/user/{email}")
 	public ResponseEntity<String> deleteUser(@PathVariable(name = "email") String email, HttpServletRequest request){
+		log.info(String.format("Called deleteUser : [ email : %s ]", email));
+		
 		HttpSession session = request.getSession();
+		String userEmail = (String)session.getAttribute("loginEmail");
+		
 		userService.deleteUser(email);
-		session.invalidate();
+		if(email.equals(userEmail))
+			session.invalidate();
 		
 		return ResponseEntity.ok().body("Deleted");
+	}
+	
+	/**
+	 * 권한 변경
+	 */
+	@PutMapping("/user/auth/{email}")
+	public ResponseEntity<String> updateAuth(@PathVariable(name="email") String email, @RequestBody String auth, HttpServletRequest request){
+		HttpSession session = request.getSession();
+		String userEmail = (String)session.getAttribute("loginEmail");
+		if(userEmail == null) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("forbidden");
+		}
+		
+		log.info(String.format("Called updateAuth [ email : %s, auth : %s ]", email, auth));
+		try {
+			userService.updateUserAuth(email, auth);
+		}catch(Exception e) {
+			log.error(e.getMessage());
+		}
+		
+		return ResponseEntity.status(HttpStatus.OK).body("changedAuth");
+		
+		
+		
 	}
 }

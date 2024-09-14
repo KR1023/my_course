@@ -1,0 +1,136 @@
+@font-face{
+    font-family: 'NanumSquareNeo';
+    src: url("../fonts/NanumSquareNeo-Variable.ttf") format("truetype");
+}
+
+@font-face{
+    font-family: 'NanumPen';
+    src: url("../fonts/NanumPen.ttf") format("truetype");
+}
+
+.user_manage{
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    font-family: 'NanumSquareNeo';
+}
+
+.user_manage .wrapper{
+    width: 1280px;
+    height: 100%;
+    padding: 20px;
+    /* background: #ff0; */
+    box-sizing: border-box;
+}
+
+.user_manage .wrapper .manage_container{
+	width: 100%;
+	height: 700px;
+	padding: 20px;
+}
+
+
+.user_manage .wrapper .manage_container .list{
+	margin-top: 50px;
+	width: 95%;
+	height: 495px;
+	border: 0px solid #C8C8C8;
+}
+
+.user_manage .wrapper .manage_container .list table{
+	width: 100%;
+	border: 0;
+	border-collapse: collapse;
+}
+
+.user_manage .wrapper .manage_container .list table tr{
+	border: 0;	
+}
+
+.user_manage .wrapper .manage_container .list table tr:first-child{
+	background: #d0d3d4;
+}
+
+.user_manage .wrapper .manage_container .list table tr:first-child:hover{
+	background: #d0d3d4;
+}
+
+.user_manage .wrapper .manage_container .list table tr:not(first-child):hover{
+	background: #f3f5f9;
+}
+
+.user_manage .wrapper .manage_container .list table tr td {
+	border: 0;
+	text-align: center;
+	height: 43px;
+}
+
+.user_manage .wrapper .manage_container .list table tr td button{
+	background: none;
+	width: 55px;
+	height: 30px;
+	border: 0px solid #C8C8C8;
+	border-radius: 7px;
+	margin-right: 10px;
+	
+}
+
+.user_manage .wrapper .manage_container .list table tr td select{
+	border: 0;
+	border-bottom: 1px solid #C8C8C8;
+	width: 90px;
+	height: 35px;
+	text-align: center;
+	font-size: 16px;
+	background: none;
+}
+
+.user_manage .wrapper .manage_container .list table tr td button:hover{
+	cursor: pointer;
+	background: #c8c8c8;
+	color: #fff;
+	font-weight: 800;
+}
+
+.user_manage .wrapper .manage_container .paging{
+	width: 100%;
+    height: 45px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user_manage .wrapper .manage_container .paging a{
+   text-decoration: none;
+   margin: 10px;
+   color: #000;
+}
+
+.user_manage .wrapper .manage_container .paging .current_page{
+	color: red;
+}
+ 
+#prev_page img{
+    width: 16px;
+    height: 16px;
+}
+
+#next_page img{
+    width: 16px;
+    height: 16px;
+}
+
+#first_page{
+	line-height: 15px;
+}
+
+#last_page{
+	line-height: 15px;
+}

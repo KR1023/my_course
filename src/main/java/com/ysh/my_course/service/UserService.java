@@ -4,10 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.ysh.my_course.domain.User;
 import com.ysh.my_course.dto.user.AddUserDto;
+import com.ysh.my_course.dto.user.ResponseUserDto;
 import com.ysh.my_course.dto.user.UpdateUserDto;
 import com.ysh.my_course.repository.EnrollmentRepository;
 import com.ysh.my_course.repository.UserRepository;
@@ -89,11 +93,20 @@ public class UserService {
 	}
 	
 	public User getUserByEmail(String email) {
+		log.info(String.format("Called getUserByEmail : [ email : %s ]", email));
 		return userRepository.findByEmail(email);
 	}
 	
-	public List<User> getUsers(){
-		return userRepository.findAll();
+	public Page<ResponseUserDto> getUsers(int pageNo){
+		List<ResponseUserDto> userList = userRepository.findByAuthNot("admin"); 
+		
+		PageRequest pageRequest = PageRequest.of(pageNo, 10);
+		
+		int start = (int) pageRequest.getOffset();
+		int end = Math.min((start + pageRequest.getPageSize()), userList.size());
+		
+		Page<ResponseUserDto> responseList = new PageImpl<ResponseUserDto>(userList.subList(start, end), pageRequest, userList.size());
+		return responseList;
 	}
 	
 	@Transactional
@@ -123,6 +136,12 @@ public class UserService {
 		enrollRepository.deleteByUserEmail(email);
 		userRepository.deleteByEmail(email);
 	}
-	
 
+	@Transactional
+	public void updateUserAuth(String email, String auth) {
+		User user = userRepository.findByEmail(email);
+		
+		user.updateAuth(auth);
+		userRepository.save(user);
+	}
 }

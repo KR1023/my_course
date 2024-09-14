@@ -31,14 +31,17 @@ let inputName;
 				<a href="/course/manage">강의 관리</a>
 			</c:if>
 			<c:if test="${userAuth != null and (userAuth == 'manager' or userAuth == 'admin')}">
-				<a href="/instructor/manage">강사 관리</a>
+				<a href="/user/manage">사용자 관리</a>
 			</c:if>
 		</div>
    	</div>
-    <div class="search">
+   	<c:if test="${manage != 'user' }" >
+   		<div class="search">
     	<input id="course_name" type="text" name="course_name" placeholder="찾으시는 강의를 입력해 주세요." onkeydown="keyDown(this)"/>
         <img src="/images/search.svg" alt="search" onClick="findCourses()"/>
     </div>
+   	</c:if>
+    
 </nav>
 </div>
 </body>
