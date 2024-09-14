@@ -1,0 +1,182 @@
+@font-face{
+    font-family: 'NanumSquareNeo';
+    src: url("../fonts/NanumSquareNeo-Variable.ttf") format("truetype");
+}
+
+@font-face{
+    font-family: 'NanumPen';
+    src: url("../fonts/NanumPen.ttf") format("truetype");
+}
+
+.my_page{
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    font-family: 'NanumSquareNeo';
+}
+
+.my_page .wrapper{
+    width: 1280px;
+    height: 100%;
+    padding: 20px;
+    /* background: #ff0; */
+    box-sizing: border-box;
+}
+
+.my_page .wrapper .greeting{
+	display: flex;
+	align-items: center;
+	margin-top: 50px;
+}
+
+.my_page .wrapper .greeting p{
+	width: 100%;
+	font-size: 28px;
+	
+}
+
+.my_page .wrapper .info_container{
+	width: 100%;
+	height: 700px;
+	margin-top: 20px;
+}
+
+.my_page .wrapper .info_container .tab_chooser{
+	width: 200px;
+	height: 30px;
+	display: flex;
+	align-items: center;
+}
+
+.my_page .wrapper .info_container .tab_chooser .tab{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100px;
+	height: 30px;
+	box-sizing: border-box;
+	border: 1px solid #B2B2B2;
+	border-bottom: 0;
+	border-radius: 7px 7px 0 0;
+}
+
+.my_page .wrapper .info_container .tab_chooser .tab:hover{
+	background: #e5e7e9;
+	cursor: pointer;
+}
+
+.my_page .wrapper .info_container .tab_chooser .tab span{
+	font-size: 18px;
+	font-weight: 600;
+}
+
+.my_page .wrapper .info_container .content_container{
+	width: 100%;
+	box-sizing: border-box;
+	padding: 10px;
+	border-top: 1px solid #C8C8C8;
+}
+
+.my_page .wrapper .info_container .content_container header{
+	width: 100%;
+	height: 40px;
+	display: flex;
+	align-items: center;
+}
+
+.my_page .wrapper .info_container .content_container header p{
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.my_page .wrapper .info_container .content_container .user_container{
+	width: 100%;
+	margin-top: 30px;
+}
+
+.my_page .wrapper .info_container .content_container .user_container form{
+	margin-left: 20px;
+	width: 400px;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.my_page .wrapper .info_container .content_container .user_container form div{
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	margin: 10px;
+	
+}
+
+.my_page .wrapper .content_container .user_container form .err_msg{
+	width: 100%;
+    height: 20px;
+    font-size: 12px;
+    margin: 5px;
+    margin-bottom: 0;
+    margin-left: 75px;
+    color: red;
+}
+
+.my_page .wrapper .info_container .content_container .user_container form div span{
+	font-size: 20px;
+}
+
+.my_page .wrapper .info_container .content_container .user_container form div input{
+	width: 70%;
+	background: #FFF;
+	border: 0;
+	border-bottom: 1px solid #C8C8C8;
+	font-size: 20px;
+	padding-left: 7px;
+	padding-bottom: 2px;
+}
+
+.my_page .wrapper .info_container .content_container .user_container form div input:focus{
+	outline: none;
+	border-bottom: 1px solid #000;
+}
+
+.my_page .wrapper .info_container .content_container .user_container form div input:disabled{
+	background: #f7f9f9;
+}
+
+.my_page .wrapper .info_container .content_container .btn_container{
+	margin-top: 30px;
+	margin-left: 65px;
+}
+
+.my_page .wrapper .info_container .content_container .btn_container button{
+	width: 100px;
+	height: 35px;
+	border: 1px solid #C8C8C8;
+	border-radius: 8px;
+	cursor: pointer;
+	background: #f3f3f3;
+	font-size: 18px;
+	
+}
+
+.my_page .wrapper .info_container .content_container .btn_container button:hover{
+	font-weight: 600;
+	background: #C6C6C6;
+}
+
+.my_page .wrapper .info_container .content_container .btn_container button#withdrawal{
+	color: #FFF;
+	background: #fe4a4a;
+	margin-left: 10px;
+}
+
+.my_page .wrapper .info_container .content_container .btn_container button#withdrawal:hover{
+	background: #C6C6C6;
+	color: #000;	
+}

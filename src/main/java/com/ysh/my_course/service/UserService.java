@@ -68,6 +68,7 @@ public class UserService {
 		String encryptedPassword = cryptoUtil.getEncrypt(decrypted, createdSalt);
 		
 		User user = userRepository.findByEmail(dto.getEmail());
+		
 		if(user != null) {
 			throw new Exception("user already exists.");
 		}else {
@@ -94,9 +95,24 @@ public class UserService {
 	}
 	
 	@Transactional
-	public User updateUser(String email, UpdateUserDto dto) {
+	public User updateUser(String email, UpdateUserDto dto) throws Exception{
+		String secretKey = configUtil.getProperty("AES.KEY");
+		String iv = configUtil.getProperty("AES.IV");
+		
 		User user = userRepository.findByEmail(email);
-		user.update(dto.getName(), dto.getPassword(), dto.getPhone());
+		
+		if(dto.getPassword() != null) {
+			String decrypted = cryptoUtil.decryptAES256(secretKey, iv, dto.getPassword());
+			String userSalt = user.getSalt();
+			String encryptedPassword = cryptoUtil.getEncrypt(decrypted, userSalt);
+			
+			user.update(dto.getName(), encryptedPassword, dto.getPhone());
+		}else {
+			user.update(dto.getName(), user.getPassword(), dto.getPhone());
+		}
+		
+		userRepository.save(user);
+		
 		return user;
 	}
 	

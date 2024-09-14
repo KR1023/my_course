@@ -27,7 +27,7 @@
     			<a class="login" href="/login">로그인</a>
     		</c:when>
     		<c:otherwise>
-    			<span>${loginEmail }</span> | 
+    			<a href="/my-page">${loginEmail }</a> | 
     			<a class="login" onClick="logout()">로그아웃</a> 
     		</c:otherwise>
     	</c:choose>

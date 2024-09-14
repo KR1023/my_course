@@ -100,9 +100,15 @@ public class UserController {
 	
 	@PutMapping("/user/{email}")
 	public ResponseEntity<User> updateUser(@PathVariable(name = "email") String email, @RequestBody UpdateUserDto dto){
-		User updatedUser = userService.updateUser(email, dto);
+		log.info(String.format("Called updateUser : [email: %s, DTO : %s]", email, dto.toString()));
+		try{
+			User updatedUser = userService.updateUser(email, dto);
+			return ResponseEntity.ok().body(updatedUser);
+		}catch(Exception e) {
+			log.error(e.getMessage());
+		}
+		return ResponseEntity.internalServerError().body(null);
 		
-		return ResponseEntity.ok().body(updatedUser);
 	}
 	
 	@DeleteMapping("/user/{email}")

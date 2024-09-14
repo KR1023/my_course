@@ -39,7 +39,7 @@
             <span>MyCourse 사용자 등록</span>
         </div>
         <form id="reg_form" action="/user" method="POST">
-            <input type="email" name=email placeholder="email" />
+            <input type="email" name="email" placeholder="email" />
             <p id="err_email" class="err_msg" ></p>
             <input type="text" name="name" placeholder="name" maxLength="10" />
             <p id="err_name" class="err_msg"></p>
