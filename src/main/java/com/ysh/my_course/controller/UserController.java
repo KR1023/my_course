@@ -112,8 +112,11 @@ public class UserController {
 	}
 	
 	@DeleteMapping("/user/{email}")
-	public ResponseEntity<String> deleteUser(@PathVariable(name = "email") String email){
+	public ResponseEntity<String> deleteUser(@PathVariable(name = "email") String email, HttpServletRequest request){
+		HttpSession session = request.getSession();
 		userService.deleteUser(email);
+		session.invalidate();
+		
 		return ResponseEntity.ok().body("Deleted");
 	}
 }

@@ -84,7 +84,7 @@
 				</div>
 				<div class="btn_container">
 					<button id="update_user" onClick="updateUser()">수정하기</button>
-					<button id="withdrawal">탈퇴하기</button>
+					<button id="withdrawal" onClick="userWithdrawal()">탈퇴하기</button>
 				</div>
 			</div>
 		</div>
@@ -93,7 +93,6 @@
 <script type="text/javascript">
 let form = document.getElementById("user_form");
 
-console.log(form);
 let checkErrors = {
 		"name" : true,
 		"password" : true,
@@ -160,7 +159,7 @@ form.phone.addEventListener("blur", () => {
 	checkPhone();
 });
 
-let updateUser = () => {
+const updateUser = () => {
 	
 	if(confirm("정보를 수정하시겠습니까?")){
 		const key = "<%=aesKey%>";
@@ -231,6 +230,26 @@ let updateUser = () => {
 		});	
 	}
 }
+
+const userWithdrawal = () => {
+	if(confirm("정말로 회원 탈퇴하시겠습니까?")){
+		$.ajax({
+			url: "/user/${user.email}",
+			type: "DELETE",
+			async: false,
+			success: (data, textStatus, jqXHR) => {
+				if(jqXHR.status === 200){
+					alert("회원 탈퇴되었습니다.");
+					location.href = "/course";
+				}
+			},
+			error: (data) => {
+				console.error(data);
+				alert("내부적인 오류가 발생했습니다. 잠시 후에 다시 시도해 주세요.");
+			}
+		});
+	}
+};
 
 </script>
 </body>

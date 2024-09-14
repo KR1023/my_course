@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.ysh.my_course.domain.User;
 import com.ysh.my_course.dto.user.AddUserDto;
 import com.ysh.my_course.dto.user.UpdateUserDto;
+import com.ysh.my_course.repository.EnrollmentRepository;
 import com.ysh.my_course.repository.UserRepository;
 import com.ysh.my_course.utils.ConfigUtil;
 import com.ysh.my_course.utils.CryptoUtil;
@@ -23,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UserService {
 
 	private final UserRepository userRepository;
+	private final EnrollmentRepository enrollRepository;
 	private final CryptoUtil cryptoUtil;
 	private final ConfigUtil configUtil;
 	
@@ -116,7 +118,9 @@ public class UserService {
 		return user;
 	}
 	
+	@Transactional
 	public void deleteUser(String email) {
+		enrollRepository.deleteByUserEmail(email);
 		userRepository.deleteByEmail(email);
 	}
 }
