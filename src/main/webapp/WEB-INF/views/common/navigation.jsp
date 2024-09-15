@@ -17,6 +17,15 @@
 <script type="text/javascript">
 let inputName;
 
+$(window).ready(() => {
+	const searchBox = document.getElementById("course_name");
+	const {pathname} = location;
+	
+	if(pathname === '/notice'){
+		searchBox.placeholder = '공지사항 찾기';
+	}
+});
+
 </script>
 </head>
 <body>
@@ -100,6 +109,8 @@ let findCourses = () => {
 			location.href = '/course?courseName=' + inputName;
 		}else if(pathname === '/course/manage'){
 			location.href = '/course/manage?courseName=' + inputName;
+		}else if(pathname === '/notice'){
+			location.href = '/notice?noticeName=' + inputName;
 		}
 	}
 };

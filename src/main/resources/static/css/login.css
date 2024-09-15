@@ -16,11 +16,11 @@
 }
 
 .login .container{
-    width: 300px;
-    height: 350px;
+    width: 350px;
+    height: 500px;
     box-sizing: border-box;
     border: 1px solid #d9d9d9;
-    border-radius: 5px;
+    border-radius: 8px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -34,6 +34,10 @@
     justify-content: center;
     align-items: center;
     margin-top: 10px;
+}
+
+.login .container .logo:hover{
+	cursor: pointer;
 }
 
 .login .container .logo img{
@@ -53,17 +57,18 @@
 }
 
 .login .container form input{
-    width: 95%;
+    width: 85%;
     height: 40px;
     font-size: 20px;
     padding: 5px;
     box-sizing: border-box;
     border: 0;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #C8C8C8;
 }
 
 .login .container form input:focus{
     outline: none;
+    border-bottom: 1px solid black;
 }
 
 .login .container form input[type="password"]{
@@ -71,7 +76,7 @@
 }
 
 .login .container form button{
-    margin-top: 15px;
+    margin-top: 50px;
     width: 80px;
     height: 35px;
     font-size: 18px;
@@ -85,4 +90,9 @@
     cursor: pointer;
     background: #f2f2f2;
 
+}
+
+.login .container a{
+	color: #000;
+	text-decoration: none;
 }

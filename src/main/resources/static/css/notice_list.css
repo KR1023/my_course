@@ -1,0 +1,94 @@
+@font-face{
+    font-family: 'NanumSquareNeo';
+    src: url("../fonts/NanumSquareNeo-Variable.ttf") format("truetype");
+}
+
+@font-face{
+    font-family: 'NanumPen';
+    src: url("../fonts/NanumPen.ttf") format("truetype");
+}
+
+.notice_list{
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    font-family: 'NanumSquareNeo';
+}
+
+.notice_list .wrapper{
+    width: 1280px;
+    height: 100%;
+    padding: 20px;
+    /* background: #ff0; */
+    box-sizing: border-box;
+}
+
+.notice_list .wrapper .list{
+	margin-top: 30px;
+	padding: 20px;
+}
+
+.notice_list .wrapper .list table{
+	width: 100%;
+	border: 1px solid #C8C8C8;
+	text-align: center;
+	border-collapse: collapse;
+}
+
+.notice_list .wrapper .list table tr:first-child{
+	background: #d0d3d4;
+}
+
+
+.notice_list .wrapper .list table td{
+	height: 35px;
+}
+
+.notice_list .wrapper .list .no_contents{
+	width: 100%;
+	text-align: center;
+	margin-top: 100px;
+}
+
+.notice_list .wrapper .paging{
+	width: 100%;
+    height: 45px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+ .notice_list .wrapper .paging a{
+    text-decoration: none;
+    margin: 10px;
+    color: #000;
+ }
+ 
+ .notice_list .wrapper .paging .current_page{
+ 	color: red;
+ }
+ 
+#prev_page img{
+    width: 16px;
+    height: 16px;
+}
+
+#next_page img{
+    width: 16px;
+    height: 16px;
+}
+
+#first_page{
+	line-height: 15px;
+}
+
+#last_page{
+	line-height: 15px;
+}

@@ -29,7 +29,7 @@
 <body>
 <div class="login">
         <div class="container">
-            <div class="logo">
+            <div class="logo" onClick="toMain()">
                 <img src="images/event_note.svg" alt="logo" />
                 <span>MyCourse</span>
             </div>
@@ -38,11 +38,15 @@
                 <input type="password" name="password" placeholder="Password" onkeydown="keyDown(this)"/><br />
                 <button type="button" onClick="login()" >로그인</button>
             </form>
-            <a href="/register">signup</a>
+            <a href="/register">회원가입</a>
         </div>
     </div>
 </body>
 <script type="text/javascript">
+const toMain = () => {
+	location.href = "/course";
+};
+
 	let form = $("#login_form")[0];
 	
 	let login = () => {
