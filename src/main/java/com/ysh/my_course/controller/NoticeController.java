@@ -48,7 +48,7 @@ public class NoticeController {
 	
 	@PostMapping("/notice")
 	public ResponseEntity<Notice> addNotice(@RequestBody RequestNoticeDto dto, HttpServletRequest request){
-		log.info(String.format("Called addNotice [ DTO : %d ]", dto.toString()));
+		log.info(String.format("Called addNotice [ DTO : %s ]", dto.toString()));
 		
 		HttpSession session = request.getSession();
 		String userEmail = (String)session.getAttribute("loginEmail");

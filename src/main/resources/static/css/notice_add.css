@@ -1,0 +1,120 @@
+@font-face{
+    font-family: 'NanumSquareNeo';
+    src: url("../fonts/NanumSquareNeo-Variable.ttf") format("truetype");
+}
+
+@font-face{
+    font-family: 'NanumPen';
+    src: url("../fonts/NanumPen.ttf") format("truetype");
+}
+
+.notice_add{
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    font-family: 'NanumSquareNeo';
+}
+
+.notice_add .wrapper{
+    width: 1280px;
+    height: 100%;
+    padding: 20px;
+    /* background: #ff0; */
+    box-sizing: border-box;
+}
+
+.notice_add .wrapper nav{
+	width: 100%;
+	margin-top: 20px;
+}
+
+.notice_add .wrapper nav img{
+	margin-left: 10px;
+}
+
+.notice_add .wrapper nav img:hover{
+	cursor: pointer;
+}
+
+.notice_add .wrapper .add_container{
+	padding: 20px;
+}
+
+.notice_add .wrapper .add_container .title{
+	width: 100%;
+	height: 40px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.notice_add .wrapper .add_container .title span{
+	font-size: 26px;
+}
+
+.notice_add .wrapper .add_container .title input{
+	width: 50%;
+	height: 35px;
+	border: 0;
+	border-bottom: 1px solid #C8C8C8;
+	margin-left: 20px;
+	font-size: 18px;	
+	margin-right: auto;
+	
+}
+
+.notice_add .wrapper .add_container .title input:focus{
+	outline: none;
+	border-bottom: 1px solid #000;
+}
+
+.notice_add .wrapper .add_container .title .btn_container{
+	margin-right: 30px;
+}
+
+.notice_add .wrapper .add_container .title .btn_container button{
+	width: 75px;
+	height: 35px;
+	background: #f9f9f9;
+	border: 1px solid #C8C8C8;
+	font-size: 17px;
+	border-radius: 8px;
+}
+
+.notice_add .wrapper .add_container .title .btn_container button:first-child{
+	margin-right: 10px;
+}
+
+.notice_add .wrapper .add_container .title .btn_container button:hover{
+	cursor: pointer;
+	background: #e5e7e9;
+}
+
+.notice_add .wrapper .add_container .content{
+	width: 100%;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	margin-top: 20px;
+}
+
+.notice_add .wrapper .add_container .content p{
+	width: 100%;
+	font-size: 20px;
+}
+
+.notice_add .wrapper .add_container .content .editor{
+	margin-top: 20px;
+	width: 100%;
+	height: 600px;
+}
+
+.notice_add .wrapper .add_container .content .editor .quill_editor{
+	height: 80%;
+}

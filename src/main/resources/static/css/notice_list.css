@@ -29,6 +29,29 @@
     box-sizing: border-box;
 }
 
+.notice_list .wrapper .add_btn_container{
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;	
+}
+
+.notice_list .wrapper .add_btn_container button{
+	margin-right: 35px;
+	width: 120px;
+	height: 35px;
+	background: #e5e7e9;
+	border: 1px solid #C8C8C8;
+	border-radius: 8px;
+	font-size: 17px;
+}
+
+.notice_list .wrapper .add_btn_container button:hover{
+	cursor: pointer;
+	background: #cdcdcd;
+	color: #fff;
+	font-weight: 700;
+}
 .notice_list .wrapper .list{
 	margin-top: 30px;
 	padding: 20px;

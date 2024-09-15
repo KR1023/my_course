@@ -16,6 +16,9 @@
 		<hr />
 		<jsp:include page="../common/navigation.jsp" />
 		<h2>공지사항</h2>
+		<c:if test="${userAuth == 'manager' or userAuth == 'admin' }">
+			<p class="add_btn_container"><button onClick="addNoticePage()">공지사항 추가</button><p>
+		</c:if>
 		<div class="list">
 			<table>
 				<tr>
@@ -124,6 +127,11 @@
 <script type="text/javascript">
 const viewNotice = noticeId => {
 	location.href = "/notice/"+noticeId;
-}
+};
+
+const addNoticePage = () => {
+	location.href = "/notice/add";
+};
+
 </script>
 </html>

@@ -57,4 +57,24 @@ public class NoticeVIewController {
 			return "error/error_500";
 		}
 	}
+	
+	@GetMapping("/notice/add")
+	public String addNoticePage(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		String userEmail = (String)session.getAttribute("loginEmail");
+		String userAuth = (String)session.getAttribute("userAuth");
+		
+		if(userEmail == null) {
+			return "error/error_403";
+		}
+		
+		if(userEmail != null && (userAuth.equals("normal") || userAuth.equals("instructor"))) {
+			return "error/error_403";
+		}
+		
+		model.addAttribute("userAuth", userAuth);
+		model.addAttribute("userEmail", userEmail);
+		
+		return "notice/noticeAdd";
+	}
 }
