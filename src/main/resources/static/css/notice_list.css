@@ -45,6 +45,14 @@
 	background: #d0d3d4;
 }
 
+.notice_list .wrapper .list table tr:first-child:hover{
+	background: #d0d3d4;
+}
+
+.notice_list .wrapper .list table tr:not(first-child):hover{
+	background: #f3f5f9;
+}
+
 
 .notice_list .wrapper .list table td{
 	height: 35px;
