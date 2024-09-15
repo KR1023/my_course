@@ -77,4 +77,26 @@ public class NoticeVIewController {
 		
 		return "notice/noticeAdd";
 	}
+	
+	@GetMapping("/notice/update/{noticeId}")
+	public String updateNoticePage(@PathVariable(name="noticeId") Long noticeId, HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		String userEmail = (String)session.getAttribute("loginEmail");
+		String userAuth = (String)session.getAttribute("userAuth");
+		
+		if(userEmail == null) {
+			return "error/error_403";
+		}
+		
+		if(userEmail != null && (userAuth.equals("normal") || userAuth.equals("instructor"))) {
+			return "error/error_403";
+		}
+		
+		ResponseNoticeDto dto = noticeService.getNotice(noticeId);
+		model.addAttribute("userAuth", userAuth);
+		model.addAttribute("userEmail", userEmail);
+		model.addAttribute("notice", dto);
+		
+		return "notice/noticeUpdate";
+	}
 }

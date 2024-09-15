@@ -61,8 +61,22 @@
 	font-size: 30px;
 }
 
-.notice_detail .wrapper .detail_container .title span:nth-child(2){
+.notice_detail .wrapper .detail_container .title .container span{
 	font-size: 20px;
+}
+
+.notice_detail .wrapper .detail_container button{
+	width: 60px;
+	height: 25px;
+	background: #f9f9f9;
+	border: 1px solid #C8C8C8;
+	font-size: 15px;
+	border-radius: 8px;
+}
+
+.notice_detail .wrapper .detail_container button:hover{
+	cursor: pointer;
+	background: #e5e7e9;
 }
 
 .notice_detail .wrapper .detail_container .createdDate{
@@ -70,6 +84,10 @@
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
+}
+
+.notice_detail .wrapper .detail_container .createdDate span{
+	margin-right: 5px;
 }
 
 .notice_detail .wrapper .detail_container .notice_content{

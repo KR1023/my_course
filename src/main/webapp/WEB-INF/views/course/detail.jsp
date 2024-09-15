@@ -14,6 +14,8 @@
 <meta charset="UTF-8">
 <title>MyCourse</title>
 <link rel="stylesheet" href="/css/detail.css" />
+<link rel="stylesheet" href="/css/quill/quill.snow.css" />
+<script type="text/javascript" src="/javascript/quill/quill.js"></script>
 </head>
 <body>
 <div class="detail">
