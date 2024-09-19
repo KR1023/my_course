@@ -73,7 +73,9 @@
 				<hr />
 				<h2>강의 소개</h2>
 				<div class="content">
-					${course.content }
+					<div class="ql-editor">
+						${course.content }
+					</div>
 				</div>
 			</div>
 		</div>

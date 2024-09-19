@@ -40,7 +40,7 @@
 				</c:if>
 			</div>
 			<hr style="margin-top: 35px;"/>
-			<div class="notice_content">
+			<div class="ql-editor">
 				${notice.content }
 			</div>
 		</div>
