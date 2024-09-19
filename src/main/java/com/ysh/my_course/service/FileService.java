@@ -32,7 +32,14 @@ public class FileService {
 	public ResponseFileDto storeFile(List<MultipartFile> files) {
 		
 		int uploadDirIdx = uploadDir.lastIndexOf("\\");
-		String rootDir = uploadDir.substring(uploadDirIdx).replace('\\','/');
+		String rootDir = null;
+	
+		if(uploadDirIdx != -1) {
+			rootDir = uploadDir.substring(uploadDirIdx).replace('\\','/');
+		}else {
+			uploadDirIdx = uploadDir.lastIndexOf("/");
+			rootDir = uploadDir.substring(uploadDirIdx);
+		}
 		
 		for(MultipartFile file : files) {
 			String dateString = util.getDateString();
