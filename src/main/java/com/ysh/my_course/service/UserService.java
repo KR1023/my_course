@@ -47,6 +47,7 @@ public class UserService {
 				result.put("result", "false");
 			
 			result.put("userAuth", user.getAuth());
+			result.put("username", user.getName());
 			
 			String salt = user.getSalt();
 			String encPwd = user.getPassword();

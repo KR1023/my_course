@@ -43,6 +43,7 @@ public class UserController {
 			HttpSession session = request.getSession();
 			session.setAttribute("session", session.getId());
 			session.setAttribute("loginEmail", dto.getEmail());
+			session.setAttribute("username", result.get("username"));
 			session.setAttribute("userAuth", result.get("userAuth"));
 			
 			return ResponseEntity.status(HttpStatus.OK).body("loginSuccess");
