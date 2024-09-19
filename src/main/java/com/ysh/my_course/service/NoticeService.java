@@ -36,7 +36,7 @@ public class NoticeService {
 		
 		Notice notice = noticeRepository.save(Notice.builder()
 							.title(dto.getTitle())
-							.content(dto.getTitle())
+							.content(dto.getContent())
 							.user(user)
 							.build());
 		return notice;
