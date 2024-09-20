@@ -24,6 +24,11 @@ public class CourseViewController {
 
 	private final CourseService courseService;
 	
+	@GetMapping("/")
+	public String index() {
+		return "redirect:/course";
+	}
+	
 	@GetMapping("/course")
 	public String courseList(@RequestParam(required = false, defaultValue = "0", value = "page") int pageNo, @RequestParam(name="courseName", required=false) String courseName, HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
